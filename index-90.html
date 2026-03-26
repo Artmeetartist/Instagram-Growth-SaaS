@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OWNIT | 90-Day Authority OS Dashboard</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        darkBg: '#050505',
+                        panelBg: '#0a0a0a',
+                        primary: '#00f2fe', // Electric Cyan
+                        primaryHover: '#00c3cc',
+                        accent: '#4facfe', // Vibrant Blue
+                        brandRed: '#dc2626', // Authority Red (Red 600)
+                        brandRedLight: '#ef4444', // Red 500
+                        brandRedDark: '#991b1b', // Red 800
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Clash Display', 'sans-serif'],
+                    },
+                    animation: {
+                        'blob': 'blob 7s infinite',
+                    },
+                    keyframes: {
+                        blob: {
+                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://api.fontshare.com/v2/css?f[]=clash-display@600,700,800&display=swap" rel="stylesheet">
+    
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <!-- html2pdf.js for Export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #050505;
+            color: #f3f4f6;
+            overflow: hidden; 
+            cursor: auto; /* Restored normal native cursor */
+        }
+
+        h1, h2, h3, h4, .font-display {
+            font-family: 'Clash Display', sans-serif;
+        }
+
+        /* Custom Scrollbar - Red Themed */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: rgba(10, 10, 10, 0.5); }
+        ::-webkit-scrollbar-thumb { background: rgba(220, 38, 38, 0.3); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(220, 38, 38, 0.6); }
+
+        /* Premium Noise Overlay */
+        .noise-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            pointer-events: none; z-index: 9999; opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        /* Glassmorphism utilities */
+        .glass-panel {
+            background: rgba(10, 10, 10, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .glass-card {
+            background: linear-gradient(145deg, rgba(20, 20, 20, 0.5) 0%, rgba(10, 10, 10, 0.8) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+            transition: border-color 0.3s ease, transform 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .glass-card::before {
+            content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(800px circle at var(--mouse-x, 0) var(--mouse-y, 0), rgba(220, 38, 38, 0.08), transparent 40%);
+            opacity: 0; transition: opacity 0.3s; pointer-events: none;
+        }
+        .glass-card:hover::before { opacity: 1; }
+        .glass-card:hover { border-color: rgba(220, 38, 38, 0.3); transform: translateY(-2px); }
+
+        /* Perspective Tilt Wrapper */
+        .tilt-wrapper { perspective: 1000px; transform-style: preserve-3d; }
+        .tilt-element { transition: transform 0.1s ease-out; will-change: transform; }
+
+        .tab-active {
+            background: linear-gradient(90deg, rgba(220, 38, 38, 0.15) 0%, transparent 100%);
+            border-left: 3px solid #dc2626;
+            color: #fff;
+        }
+
+        /* Transitions */
+        .fade-in { animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .print-only { display: none; }
+        .interactive-el { transition: transform 0.1s ease; }
+        .interactive-el:active { transform: scale(0.98); }
+    </style>
+</head>
+<body class="h-screen flex overflow-hidden selection:bg-brandRed selection:text-white">
+    
+    <!-- Noise (Ignored in PDF) -->
+    <div class="noise-overlay" data-html2canvas-ignore></div>
+
+    <!-- Animated Ambient Backgrounds -->
+    <div class="fixed top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none opacity-20" data-html2canvas-ignore>
+        <div class="absolute top-[-10%] left-[-10%] w-[40vw] h-[40vw] rounded-full bg-brandRed/20 blur-[120px] mix-blend-screen animate-blob"></div>
+        <div class="absolute bottom-[-20%] right-[-10%] w-[50vw] h-[50vw] rounded-full bg-red-900/20 blur-[150px] mix-blend-screen animate-blob" style="animation-delay: 2s;"></div>
+    </div>
+
+    <!-- LEFT SIDEBAR: 90 Days System -->
+    <aside class="w-72 glass-panel h-full flex flex-col border-r border-gray-800 z-10 flex-shrink-0 relative">
+        <!-- Logo Area -->
+        <div class="p-6 border-b border-gray-800 flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-brandRed to-brandRedDark flex items-center justify-center shadow-[0_0_15px_rgba(220,38,38,0.4)] interactive-el">
+                <i class="ph-bold ph-lightning text-white text-xl"></i>
+            </div>
+            <div>
+                <h1 class="font-display font-bold text-xl tracking-wide text-white leading-tight">OWNIT</h1>
+                <p class="text-[10px] uppercase tracking-widest text-brandRedLight font-bold">90-Day Authority</p>
+            </div>
+        </div>
+
+        <!-- Progress Tracker -->
+        <div class="p-5 border-b border-gray-800">
+            <div class="flex justify-between text-xs mb-2 text-gray-400 font-medium">
+                <span>Empire Progress</span>
+                <span id="progress-text" class="text-brandRedLight font-bold">0%</span>
+            </div>
+            <div class="w-full bg-gray-900 rounded-full h-1.5 overflow-hidden">
+                <div id="progress-bar" class="bg-gradient-to-r from-brandRed to-brandRedDark h-1.5 rounded-full transition-all duration-500 w-0 shadow-[0_0_10px_#dc2626]"></div>
+            </div>
+            <p class="text-[10px] text-gray-500 mt-2 text-center"><span id="completed-count">0</span> of 90 Days Completed</p>
+        </div>
+
+        <!-- Days List -->
+        <div class="flex-1 overflow-y-auto py-2 px-3 space-y-1" id="days-list">
+            <!-- JS will inject 90 unique days here -->
+        </div>
+        
+        <!-- Bottom Settings/Export -->
+        <div class="p-4 border-t border-gray-800 bg-[#050505]">
+            <button onclick="exportToPDF()" class="interactive-el w-full py-3 px-4 bg-gray-900 hover:bg-brandRed hover:text-white text-sm font-bold rounded-lg text-white transition-all duration-300 flex items-center justify-center gap-2 border border-gray-700 hover:border-brandRed group">
+                <i class="ph-bold ph-download-simple text-lg"></i> Export Full Quarter
+            </button>
+        </div>
+    </aside>
+
+    <!-- MAIN DASHBOARD -->
+    <main class="flex-1 h-full flex flex-col relative overflow-y-auto" id="main-scroll-area">
+        
+        <!-- Top Navbar & AI Configuration -->
+        <header class="sticky top-0 z-20 glass-panel border-b border-gray-800 px-8 py-5 flex justify-between items-center backdrop-blur-xl">
+            <div>
+                <h2 class="text-2xl font-display font-bold text-white tracking-tight">The Authority Dashboard</h2>
+                <p class="text-sm text-gray-400 mt-1">Total Market Dominance & High-Ticket Conversion</p>
+            </div>
+            
+            <!-- AI Integration Simulation (Dynamic Customization) -->
+            <div class="flex gap-4 items-center bg-gray-900/80 p-2.5 rounded-xl border border-gray-800 shadow-inner">
+                <div class="flex items-center gap-2 px-3 border-r border-gray-800">
+                    <i class="ph-fill ph-magic-wand text-brandRedLight animate-pulse"></i>
+                    <span class="text-xs font-bold text-gray-300 uppercase tracking-wider">AI Target</span>
+                </div>
+                <input type="text" id="input-clinic" placeholder="Enter Clinic Name" value="Apex Dental Studio" 
+                    class="interactive-el bg-transparent border-none text-sm text-white placeholder-gray-600 focus:ring-0 focus:outline-none w-36 font-medium">
+                <div class="w-px h-5 bg-gray-800"></div>
+                <input type="text" id="input-city" placeholder="Enter Region" value="Delhi NCR" 
+                    class="interactive-el bg-transparent border-none text-sm text-white placeholder-gray-600 focus:ring-0 focus:outline-none w-32 font-medium">
+            </div>
+        </header>
+
+        <div class="p-8 max-w-7xl mx-auto w-full space-y-8 pb-20" id="export-content">
+            
+            <!-- Export Header (Hidden in UI, visible in PDF) -->
+            <div class="print-only text-center mb-8 border-b border-gray-200 pb-4">
+                <h1 class="text-3xl font-bold text-brandRedDark font-display" id="print-title">OWNIT 90-Day Authority Plan</h1>
+                <p class="text-gray-600 mt-2">Generated for <span id="print-clinic" class="font-bold"></span>, <span id="print-city"></span></p>
+            </div>
+
+            <!-- Stats Row with 3D Tilt Physics -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-5" id="stats-grid" data-html2canvas-ignore>
+                <div class="tilt-wrapper">
+                    <div class="tilt-element glass-card p-5 rounded-2xl flex items-start justify-between h-full cursor-pointer interactive-el">
+                        <div>
+                            <p class="text-gray-500 text-[10px] font-bold uppercase tracking-widest mb-1">Q1 Follower Target</p>
+                            <h3 class="text-3xl font-display font-bold text-white">500,000</h3>
+                            <p class="text-brandRedLight text-xs mt-2 flex items-center gap-1 font-medium"><i class="ph-bold ph-trend-up"></i> Exponential Scaling</p>
+                        </div>
+                        <div class="w-10 h-10 rounded-full bg-brandRed/10 flex items-center justify-center text-brandRedLight">
+                            <i class="ph-fill ph-users-three text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="tilt-wrapper">
+                    <div class="tilt-element glass-card p-5 rounded-2xl flex items-start justify-between h-full cursor-pointer interactive-el">
+                        <div>
+                            <p class="text-gray-500 text-[10px] font-bold uppercase tracking-widest mb-1">High-Ticket Leads</p>
+                            <h3 class="text-3xl font-display font-bold text-white">3,500+</h3>
+                            <p class="text-accent text-xs mt-2 flex items-center gap-1 font-medium"><i class="ph-bold ph-target"></i> Implants & Aligners</p>
+                        </div>
+                        <div class="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center text-accent">
+                            <i class="ph-fill ph-magnet text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="tilt-wrapper">
+                    <div class="tilt-element glass-card p-5 rounded-2xl flex items-start justify-between h-full cursor-pointer interactive-el relative overflow-hidden">
+                        <div class="absolute -right-4 -bottom-4 w-24 h-24 bg-green-500/10 rounded-full blur-xl"></div>
+                        <div class="relative z-10">
+                            <p class="text-gray-500 text-[10px] font-bold uppercase tracking-widest mb-1">Daily Bookings</p>
+                            <h3 class="text-3xl font-display font-bold text-white">25-40</h3>
+                            <p class="text-green-400 text-xs mt-2 flex items-center gap-1 font-medium"><i class="ph-bold ph-calendar-check"></i> Clinic at Capacity</p>
+                        </div>
+                        <div class="w-10 h-10 rounded-full bg-green-500/10 flex items-center justify-center text-green-400 relative z-10">
+                            <i class="ph-fill ph-calendar-plus text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="tilt-wrapper">
+                    <div class="tilt-element glass-card p-5 rounded-2xl flex items-start justify-between h-full cursor-pointer interactive-el">
+                        <div>
+                            <p class="text-gray-500 text-[10px] font-bold uppercase tracking-widest mb-1">Market Position</p>
+                            <h3 class="text-3xl font-display font-bold text-white">#1</h3>
+                            <p class="text-purple-400 text-xs mt-2 flex items-center gap-1 font-medium"><i class="ph-bold ph-crown"></i> Regional Authority</p>
+                        </div>
+                        <div class="w-10 h-10 rounded-full bg-purple-500/10 flex items-center justify-center text-purple-400">
+                            <i class="ph-fill ph-crown-simple text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MAIN CONTENT AREA: TWO COLUMNS -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                
+                <!-- LEFT COLUMN: The Daily Content Engine -->
+                <div class="lg:col-span-2 space-y-6">
+                    
+                    <div class="flex justify-between items-center" data-html2canvas-ignore>
+                        <h3 class="text-2xl font-display font-bold text-white flex items-center gap-3">
+                            <span class="w-2 h-8 bg-brandRed rounded-full shadow-[0_0_10px_#dc2626]"></span>
+                            <span id="display-day-title">Day 1 Execution Plan</span>
+                        </h3>
+                        <button onclick="toggleDayCompletion()" id="btn-complete" class="interactive-el px-5 py-2.5 bg-gray-900 hover:bg-white hover:text-black text-gray-300 rounded-lg text-sm font-bold transition-all border border-gray-700 flex items-center gap-2 group">
+                            <i class="ph-bold ph-check-circle text-lg group-hover:text-green-500 transition-colors"></i> Mark Complete
+                        </button>
+                    </div>
+
+                    <!-- Day Content Card -->
+                    <div class="glass-card rounded-2xl border border-gray-800 overflow-hidden fade-in" id="content-engine">
+                        <!-- Header Banner -->
+                        <div class="bg-gradient-to-r from-gray-900 to-[#050505] p-6 border-b border-gray-800 flex justify-between items-center relative overflow-hidden">
+                            <div class="absolute right-0 top-0 w-64 h-full bg-brandRed/5 blur-[50px] pointer-events-none"></div>
+                            <div class="relative z-10">
+                                <div class="flex items-center gap-2 mb-3">
+                                    <span id="content-type-badge" class="px-3 py-1 bg-brandRed/10 text-brandRedLight text-[10px] font-bold uppercase tracking-widest rounded-full border border-brandRed/20 inline-block">Educational</span>
+                                    <span class="text-xs text-gray-500 font-mono">Theme: <span id="content-theme" class="text-gray-300 font-medium">Foundation</span></span>
+                                </div>
+                                <h4 id="reel-idea" class="text-xl font-display font-bold text-white leading-tight">Loading Concept...</h4>
+                            </div>
+                            <div class="text-right relative z-10">
+                                <p class="text-[10px] text-gray-500 uppercase tracking-widest font-bold mb-1">Post Time</p>
+                                <p id="posting-time" class="text-white font-bold text-lg flex items-center justify-end gap-1.5"><i class="ph-fill ph-clock text-brandRedLight"></i> 6:30 PM</p>
+                            </div>
+                        </div>
+
+                        <div class="p-6 space-y-6 bg-[#080808]">
+                            <!-- Hook & Script Grid -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <!-- Hook -->
+                                <div class="bg-[#0a0a0a] rounded-xl p-5 border border-gray-800 relative group cursor-pointer interactive-el" onclick="copyText(this)">
+                                    <div class="absolute inset-0 bg-brandRed/5 opacity-0 group-hover:opacity-100 transition-opacity rounded-xl"></div>
+                                    <h5 class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-3 flex items-center gap-2"><i class="ph-fill ph-fishing-rod text-brandRedLight text-lg"></i> 3-Second Visual Hook</h5>
+                                    <p id="hook-text" class="text-white text-lg font-medium leading-snug">"..."</p>
+                                </div>
+                                <!-- CTA -->
+                                <div class="bg-[#0a0a0a] rounded-xl p-5 border border-gray-800 relative group cursor-pointer interactive-el" onclick="copyText(this)">
+                                    <div class="absolute inset-0 bg-accent/5 opacity-0 group-hover:opacity-100 transition-opacity rounded-xl"></div>
+                                    <h5 class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-3 flex items-center gap-2"><i class="ph-fill ph-cursor-click text-accent text-lg"></i> Automation CTA</h5>
+                                    <p id="cta-text" class="text-white text-md font-medium leading-snug">...</p>
+                                </div>
+                            </div>
+
+                            <!-- Script -->
+                            <div class="relative group cursor-pointer interactive-el" onclick="copyText(this)">
+                                <h5 class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-3 flex items-center gap-2"><i class="ph-fill ph-video-camera text-primary text-lg"></i> Fast-Paced Script (15-20s)</h5>
+                                <div class="bg-[#0f0f0f] group-hover:bg-[#111] transition-colors rounded-xl p-6 border border-gray-800 border-l-4 border-l-brandRed relative">
+                                    <i class="ph-fill ph-quotes text-5xl text-gray-800/50 absolute top-4 right-4 pointer-events-none"></i>
+                                    <p id="script-text" class="text-gray-300 text-sm leading-relaxed relative z-10 whitespace-pre-line font-medium">...</p>
+                                </div>
+                            </div>
+
+                            <!-- Caption & Hashtags -->
+                            <div class="bg-[#0a0a0a] rounded-xl p-6 border border-gray-800">
+                                <div class="flex justify-between items-center mb-4">
+                                    <h5 class="text-[10px] font-bold text-gray-500 uppercase tracking-widest flex items-center gap-2"><i class="ph-fill ph-text-align-left text-gray-400 text-lg"></i> SEO-Optimized Caption</h5>
+                                    <button class="interactive-el text-xs text-brandRedLight hover:text-white font-bold uppercase tracking-wider transition-colors flex items-center gap-1" onclick="copyToClipboard('caption-text')" data-html2canvas-ignore><i class="ph-bold ph-copy"></i> Copy</button>
+                                </div>
+                                <p id="caption-text" class="text-gray-400 text-sm leading-relaxed mb-5 whitespace-pre-line">...</p>
+                                
+                                <div class="pt-5 border-t border-gray-800/50">
+                                    <h5 class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2 flex items-center gap-2"><i class="ph-fill ph-hash text-accent text-lg"></i> Geo-Targeted Hashtags</h5>
+                                    <p id="hashtags-text" class="text-primary text-sm font-medium">...</p>
+                                </div>
+                            </div>
+
+                            <!-- Story & Engagement -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="bg-[#0a0a0a] rounded-xl p-5 border border-gray-800">
+                                    <h5 class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-3 flex items-center gap-2"><i class="ph-fill ph-instagram-logo text-pink-500 text-lg"></i> Story Retargeting</h5>
+                                    <p id="story-strategy" class="text-gray-400 text-sm">...</p>
+                                </div>
+                                <div class="bg-[#0a0a0a] rounded-xl p-5 border border-gray-800">
+                                    <h5 class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-3 flex items-center gap-2"><i class="ph-fill ph-chats-circle text-blue-400 text-lg"></i> Engagement Actions</h5>
+                                    <p id="engagement-actions" class="text-gray-400 text-sm">...</p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RIGHT COLUMN: Advanced OS Tools -->
+                <div class="space-y-6">
+                    
+                    <!-- High Ticket Engine (90-Day Exclusive) -->
+                    <div class="glass-card rounded-2xl border border-brandRed/30 p-6 relative overflow-hidden group shadow-[0_0_30px_rgba(220,38,38,0.1)]">
+                        <div class="absolute top-0 right-0 w-32 h-32 bg-brandRed/10 blur-2xl rounded-full"></div>
+                        <div class="inline-block px-2 py-0.5 bg-brandRed/20 border border-brandRed/30 rounded text-[9px] font-bold text-brandRedLight uppercase tracking-widest mb-3">90-Day Exclusive</div>
+                        <h4 class="text-lg font-display font-bold text-white mb-5 flex items-center gap-2 border-b border-gray-800 pb-4 relative z-10">
+                            <i class="ph-fill ph-diamond text-brandRedLight text-xl"></i> High-Ticket Conversion
+                        </h4>
+                        
+                        <div class="space-y-5 relative z-10">
+                            <div>
+                                <p class="text-[10px] text-gray-500 uppercase tracking-widest font-bold mb-2">Implant/Aligner Auto-Reply</p>
+                                <div class="bg-[#050505] p-4 rounded-lg border border-gray-800 text-sm text-gray-300 relative group cursor-pointer interactive-el" onclick="copyText(this)">
+                                    "Hi [Name]! Thanks for inquiring about [Treatment]. Unlike standard clinics, <span class="custom-clinic text-brandRedLight font-bold"></span> uses 3D guided technology for perfect precision. Reply with 'GUIDE' to instantly receive our Pricing & Process PDF."
+                                    <div class="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center">
+                                        <span class="text-xs font-bold text-white uppercase tracking-wider pointer-events-none"><i class="ph-bold ph-copy"></i> Click to Copy</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <p class="text-[10px] text-gray-500 uppercase tracking-widest font-bold mb-2">Objection Handling Script</p>
+                                <div class="bg-[#050505] p-4 rounded-lg border border-gray-800 text-sm text-gray-300">
+                                    "I completely understand that price is a factor. We do offer flexible EMI options starting at just ₹2,500/month. Would you be open to a free 10-minute digital scan to see exactly what's needed?"
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Patient Ambassador Program (90-Day Exclusive) -->
+                    <div class="glass-card rounded-2xl border border-gray-800 p-6">
+                        <div class="inline-block px-2 py-0.5 bg-purple-500/20 border border-purple-500/30 rounded text-[9px] font-bold text-purple-400 uppercase tracking-widest mb-3">90-Day Exclusive</div>
+                        <h4 class="text-lg font-display font-bold text-white mb-4 flex items-center gap-2 border-b border-gray-800 pb-4">
+                            <i class="ph-fill ph-megaphone text-purple-400 text-xl"></i> Ambassador Setup
+                        </h4>
+                        <ul class="space-y-4 text-sm text-gray-400">
+                            <li class="flex items-start gap-3">
+                                <div class="w-6 h-6 rounded bg-gray-900 border border-gray-700 flex items-center justify-center flex-shrink-0 text-white"><i class="ph-bold ph-gift text-xs"></i></div>
+                                <div>
+                                    <strong class="text-white block mb-1">The Offer</strong>
+                                    Give existing patients a "VIP Card" for 1 free teeth cleaning per year, IF they tag <span class="custom-clinic text-white font-bold"></span> in a story post-treatment.
+                                </div>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <div class="w-6 h-6 rounded bg-gray-900 border border-gray-700 flex items-center justify-center flex-shrink-0 text-white"><i class="ph-bold ph-users text-xs"></i></div>
+                                <div>
+                                    <strong class="text-white block mb-1">Referral Loop</strong>
+                                    "Bring a friend for their aligner scan, get ₹2000 off your next retainer."
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- CEO Insights Panel -->
+                    <div class="bg-gradient-to-br from-[#0a0a0a] to-[#111] rounded-2xl border border-[#222] p-6 relative overflow-hidden">
+                        <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-brandRed/10 rounded-full blur-2xl"></div>
+                        <i class="ph-fill ph-lightbulb text-6xl text-brandRedLight/10 absolute -bottom-2 -right-2"></i>
+                        <h4 class="text-lg font-display font-bold text-white mb-3 flex items-center gap-2 relative z-10">
+                            <i class="ph-fill ph-brain text-brandRedLight"></i> CEO Insight
+                        </h4>
+                        <p class="text-xs text-gray-400 leading-relaxed relative z-10">
+                            At 90 days, you aren't just posting content; you are building an <strong>owned media asset</strong>. Competitors rely on paid ads. You rely on organic search intent and extreme local trust. When someone in <span class="custom-city font-bold text-white"></span> searches for 'dentist', they will already know your face.
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="fixed bottom-5 right-5 transform translate-y-20 opacity-0 transition-all duration-300 bg-[#0a0a0a] border border-brandRed/50 shadow-[0_0_20px_rgba(220,38,38,0.2)] px-5 py-3 rounded-lg flex items-center gap-3 z-50">
+        <i class="ph-fill ph-check-circle text-brandRedLight text-xl"></i>
+        <span id="toast-msg" class="text-sm font-bold text-white">Action successful</span>
+    </div>
+
+    <!-- MAIN JAVASCRIPT -->
+    <script>
+        // --- 1. STATE & 90-DAY UNIQUE MATRIX DATA GENERATION ---
+        
+        // Exactly 15 Topics * 6 Angles = 90 Unique Days. Zero duplication.
+        const highTicketTopics = [
+            "Single Implants", "Full Arch Implants", "Porcelain Veneers",
+            "Clear Aligners", "Smile Makeovers", "Painless Root Canals",
+            "Laser Teeth Whitening", "Wisdom Tooth Extraction", "Gum Health & Bleeding",
+            "Severe Cavities", "Kids Preventive Care", "Sleep/Sedation Dentistry",
+            "Ultrasonic Scaling", "Chipped Tooth Bonding", "Jaw Pain & TMJ"
+        ];
+        
+        const marketingAngles = [
+            "Educational", "Myth-busting", "Transformation", 
+            "Authority", "Emotional", "Urgent Warning"
+        ];
+
+        let rawDays = [];
+
+        // Build the Matrix
+        highTicketTopics.forEach(topic => {
+            marketingAngles.forEach(angle => {
+                let idea, hook, script, caption, cta, story, engagement;
+
+                // Base dynamic generation based on the angle
+                if (angle === "Educational") {
+                    idea = `${topic} 101`;
+                    hook = `The 60-second masterclass on ${topic.toLowerCase()}. Stop scrolling!`;
+                    script = `Dentist here! Most clinics in {city} won't explain this clearly...\nWhen it comes to ${topic.toLowerCase()}, precision is everything.\nHere is the step-by-step framework we use to guarantee results.\nSave this video so you know exactly what to look for.`;
+                    caption = `Education is the foundation of great dentistry. 📚\n\nUnderstanding ${topic.toLowerCase()} shouldn't be confusing. At {clinic}, we ensure you know every step of your treatment plan before we begin.\n\n👇 Drop your questions below!`;
+                    cta = `DM 'INFO' for our free ${topic} guide.`;
+                    story = `Poll: 'Have you ever considered ${topic.toLowerCase()}?' Yes / Need more info`;
+                    engagement = `Find local {city} fitness/wellness accounts. Leave thoughtful comments.`;
+
+                } else if (angle === "Myth-busting") {
+                    idea = `Debunking ${topic} Myths`;
+                    hook = `The biggest lie you've been told about ${topic.toLowerCase()}.`;
+                    script = `Myth: It's too painful, too expensive, or takes too long.\nFact: With our modern 3D tech at {clinic}, ${topic.toLowerCase()} is faster and more comfortable than ever.\nStop letting old rumors ruin your smile!`;
+                    caption = `Stop believing the internet! 🛑\n\nThere are so many myths about ${topic.toLowerCase()}. We use evidence-based dentistry at {clinic} in {city} to provide safe, effective care.\n\nHave you heard this myth before? Let us know!`;
+                    cta = `DM 'CONSULT' for a priority booking.`;
+                    story = `True/False quiz sticker about ${topic}.`;
+                    engagement = `Reply to comments on larger dental/health pages correcting misinformation.`;
+
+                } else if (angle === "Transformation") {
+                    idea = `${topic} Before & After`;
+                    hook = `Watch this incredible reaction to their new smile after ${topic.toLowerCase()}!`;
+                    script = `They hid their smile for years because they were so self-conscious.\nUsing our signature ${topic.toLowerCase()} protocols, we rebuilt their confidence in just a few visits.\nThe tears of joy make it all worth it.`;
+                    caption = `Life-changing results. ✨\n\nWe love seeing our patients leave {clinic} with newfound confidence. We customized this ${topic.toLowerCase()} treatment specifically for them.\n\nWant results like this?`;
+                    cta = `DM 'TRANSFORM' for a virtual smile assessment.`;
+                    story = `Before and After slider featuring the ${topic} case.`;
+                    engagement = `Interact with local wedding planners and photographers in {city}. High intent leads!`;
+
+                } else if (angle === "Authority") {
+                    idea = `Why Our ${topic} is Elite`;
+                    hook = `Here is why we refuse to cut corners on ${topic.toLowerCase()}.`;
+                    script = `Step inside {clinic}'s treatment rooms.\nFor ${topic.toLowerCase()}, we use premium imported materials and digital scanners.\nWe don't do cheap or rushed work in {city}. Your health deserves the best.`;
+                    caption = `Quality over everything. 🛡️\n\nWhen it comes to ${topic.toLowerCase()}, you shouldn't compromise. At {clinic}, we follow strict international protocols and use the best materials available.\n\nInvest in your smile safely.`;
+                    cta = `Click the link in our bio to book your priority slot.`;
+                    story = `Behind-the-scenes video showing the tech used for ${topic}.`;
+                    engagement = `Network with local premium businesses (salons, boutiques) in {city}.`;
+
+                } else if (angle === "Emotional") {
+                    idea = `Overcoming Fear of ${topic}`;
+                    hook = `They hadn't smiled in 10 years. Today, that changed forever.`;
+                    script = `Dental anxiety is completely normal. Our patient was terrified of ${topic.toLowerCase()}.\nWe used our Empathy-First approach, went at their pace, and look at them now.\nYou are safe with us at {clinic}.`;
+                    caption = `We treat humans, not just teeth. 💙\n\nWe practice empathy-first care at {clinic}. If you have anxiety about ${topic.toLowerCase()}, we promise to listen and go at your pace.\n\nYou are safe here in {city}.`;
+                    cta = `DM 'CHAT' and let's talk about your concerns. No pressure.`;
+                    story = `Share a written patient review praising the gentle care during ${topic}.`;
+                    engagement = `Engage with mental health/anxiety support pages in the local area.`;
+
+                } else if (angle === "Urgent Warning") {
+                    idea = `3 Signs You Need ${topic}`;
+                    hook = `STOP ignoring these 3 warning signs. You might need ${topic.toLowerCase()} immediately.`;
+                    script = `Waiting will only make it 10x more expensive.\nIf you experience pain, sensitivity, or you're hiding your smile, it's time to act.\nDon't wait until it's an emergency. Let's fix it proactively at {clinic}.`;
+                    caption = `Don't ignore the signs! 🚨\n\nDelaying ${topic.toLowerCase()} can lead to severe complications and higher costs down the line. Early intervention at {clinic} is key.\n\nAre you experiencing any of these?`;
+                    cta = `DM 'EMERGENCY' to get booked in within 24 hours.`;
+                    story = `Warning signs checklist graphic for ${topic}.`;
+                    engagement = `Quickly reply to all incoming DMs and comments. Speed equals trust.`;
+                }
+
+                rawDays.push({
+                    type: angle,
+                    theme: topic,
+                    idea: idea,
+                    hook: `"${hook}"`,
+                    script: script,
+                    caption: caption,
+                    cta: cta,
+                    story: story,
+                    engagement: engagement,
+                    hashtags: `#${topic.replace(/\s+/g, '')} #DentalCare #${angle.replace(/[- ]/g, '')}Dentistry`,
+                });
+            });
+        });
+
+        // Fisher-Yates Shuffle
+        for (let i = rawDays.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [rawDays[i], rawDays[j]] = [rawDays[j], rawDays[i]];
+        }
+
+        // Force Day 1 to be an Authority post
+        const authIndex = rawDays.findIndex(d => d.type === 'Authority');
+        if(authIndex !== -1) {
+            const temp = rawDays[0];
+            rawDays[0] = rawDays[authIndex];
+            rawDays[authIndex] = temp;
+        }
+
+        // Map into final daysData
+        let daysData = rawDays.map((data, index) => {
+            const times = ["9:00 AM", "12:30 PM", "5:00 PM", "6:30 PM", "8:00 PM"];
+            data.day = index + 1;
+            data.time = times[Math.floor(Math.random() * times.length)];
+            data.completed = false;
+            return data;
+        });
+
+        // App State
+        let currentDayIndex = 0;
+        let clinicName = "Apex Dental Studio";
+        let city = "Delhi NCR";
+
+        // --- 2. DOM ELEMENTS ---
+        const els = {
+            daysList: document.getElementById('days-list'),
+            progressBar: document.getElementById('progress-bar'),
+            progressText: document.getElementById('progress-text'),
+            completedCount: document.getElementById('completed-count'),
+            
+            inputClinic: document.getElementById('input-clinic'),
+            inputCity: document.getElementById('input-city'),
+            
+            displayDayTitle: document.getElementById('display-day-title'),
+            typeBadge: document.getElementById('content-type-badge'),
+            themeText: document.getElementById('content-theme'),
+            reelIdea: document.getElementById('reel-idea'),
+            postingTime: document.getElementById('posting-time'),
+            hookText: document.getElementById('hook-text'),
+            ctaText: document.getElementById('cta-text'),
+            scriptText: document.getElementById('script-text'),
+            captionText: document.getElementById('caption-text'),
+            hashtagsText: document.getElementById('hashtags-text'),
+            storyStrategy: document.getElementById('story-strategy'),
+            engagementActions: document.getElementById('engagement-actions'),
+            
+            btnComplete: document.getElementById('btn-complete'),
+            contentEngine: document.getElementById('content-engine')
+        };
+
+        // --- 3. CORE FUNCTIONS ---
+
+        function init() {
+            renderSidebar();
+            selectDay(0);
+            updateGlobalPlaceholders();
+            setupInteractivity();
+            
+            els.inputClinic.addEventListener('input', (e) => {
+                clinicName = e.target.value || "Apex Dental Studio";
+                updateUI();
+                updateGlobalPlaceholders();
+            });
+            els.inputCity.addEventListener('input', (e) => {
+                city = e.target.value || "Delhi NCR";
+                updateUI();
+                updateGlobalPlaceholders();
+            });
+        }
+
+        function renderSidebar() {
+            els.daysList.innerHTML = '';
+            let completedCount = 0;
+
+            daysData.forEach((data, index) => {
+                if(data.completed) completedCount++;
+
+                const btn = document.createElement('button');
+                btn.className = `interactive-el w-full text-left px-4 py-3 rounded-lg text-sm font-bold transition-all duration-200 flex items-center justify-between group border border-transparent ${index === currentDayIndex ? 'tab-active' : 'text-gray-500 hover:bg-gray-900 hover:text-white'}`;
+                btn.onclick = () => selectDay(index);
+                
+                let iconClass = 'ph-circle text-gray-600';
+                if(data.completed) iconClass = 'ph-fill ph-check-circle text-brandRedLight shadow-[0_0_10px_#ef4444] rounded-full';
+                else if (index === currentDayIndex) iconClass = 'ph-fill ph-play-circle text-brandRedLight';
+
+                btn.innerHTML = `
+                    <span class="flex items-center gap-3">
+                        <i class="${iconClass} text-xl group-hover:scale-110 transition-transform"></i>
+                        Day ${data.day}
+                    </span>
+                    <span class="text-[9px] uppercase tracking-widest opacity-50 font-bold">${data.type.substring(0,3)}</span>
+                `;
+                els.daysList.appendChild(btn);
+            });
+
+            // Update Progress
+            const progress = Math.round((completedCount / 90) * 100);
+            els.progressBar.style.width = `${progress}%`;
+            els.progressText.innerText = `${progress}%`;
+            els.completedCount.innerText = completedCount;
+        }
+
+        function selectDay(index) {
+            currentDayIndex = index;
+            renderSidebar(); 
+            updateUI(); 
+            
+            els.contentEngine.classList.remove('fade-in');
+            void els.contentEngine.offsetWidth; 
+            els.contentEngine.classList.add('fade-in');
+            
+            if(window.innerWidth < 1024) {
+                document.getElementById('main-scroll-area').scrollTop = 0;
+            }
+        }
+
+        function formatText(text) {
+            if(!text) return "";
+            return text
+                .replace(/{clinic}/g, clinicName)
+                .replace(/{city}/g, city);
+        }
+
+        function updateUI() {
+            const data = daysData[currentDayIndex];
+            
+            els.displayDayTitle.innerText = `Day ${data.day} Execution Plan`;
+            els.themeText.innerText = data.theme;
+            
+            // Badge styling
+            els.typeBadge.innerText = data.type;
+            let badgeColors = "bg-primary/10 text-primary border-primary/20";
+            if(data.type === 'Transformation') badgeColors = "bg-green-500/10 text-green-400 border-green-500/20";
+            if(data.type === 'Myth-busting') badgeColors = "bg-red-500/10 text-red-500 border-red-500/20";
+            if(data.type === 'Authority') badgeColors = "bg-brandRed/10 text-brandRedLight border-brandRed/20";
+            if(data.type === 'Emotional') badgeColors = "bg-purple-500/10 text-purple-400 border-purple-500/20";
+            if(data.type === 'Urgent Warning') badgeColors = "bg-orange-500/10 text-orange-400 border-orange-500/20";
+            els.typeBadge.className = `px-3 py-1 text-[10px] font-bold uppercase tracking-widest rounded-full border inline-block ${badgeColors}`;
+
+            els.reelIdea.innerText = formatText(data.idea);
+            els.postingTime.innerHTML = `<i class="ph-fill ph-clock text-brandRedLight"></i> ${data.time}`;
+            els.hookText.innerText = formatText(data.hook);
+            els.ctaText.innerText = formatText(data.cta);
+            els.scriptText.innerText = formatText(data.script);
+            els.captionText.innerText = formatText(data.caption);
+            
+            const dynamicTags = `#${city.replace(/\s+/g, '')}Dentist #${city.replace(/\s+/g, '')}Clinic #${clinicName.replace(/\s+/g, '')}`;
+            els.hashtagsText.innerText = `${data.hashtags} ${dynamicTags}`;
+            
+            els.storyStrategy.innerText = formatText(data.story);
+            els.engagementActions.innerText = formatText(data.engagement);
+
+            // Update Complete Button
+            if(data.completed) {
+                els.btnComplete.innerHTML = `<i class="ph-bold ph-check-circle text-green-500 text-lg"></i> Completed`;
+                els.btnComplete.classList.replace('bg-gray-900', 'bg-green-500/10');
+                els.btnComplete.classList.replace('border-gray-700', 'border-green-500/30');
+                els.btnComplete.classList.add('text-green-500');
+                els.btnComplete.classList.remove('text-gray-300');
+            } else {
+                els.btnComplete.innerHTML = `<i class="ph-bold ph-check-circle text-lg group-hover:text-green-500 transition-colors"></i> Mark Complete`;
+                els.btnComplete.classList.replace('bg-green-500/10', 'bg-gray-900');
+                els.btnComplete.classList.replace('border-green-500/30', 'border-gray-700');
+                els.btnComplete.classList.remove('text-green-500');
+                els.btnComplete.classList.add('text-gray-300');
+            }
+        }
+
+        function updateGlobalPlaceholders() {
+            document.querySelectorAll('.custom-clinic').forEach(el => el.innerText = clinicName);
+            document.querySelectorAll('.custom-clinic-nospace').forEach(el => el.innerText = clinicName.replace(/\s+/g, ''));
+            document.querySelectorAll('.custom-city').forEach(el => el.innerText = city);
+            document.getElementById('print-clinic').innerText = clinicName;
+            document.getElementById('print-city').innerText = city;
+        }
+
+        function toggleDayCompletion() {
+            daysData[currentDayIndex].completed = !daysData[currentDayIndex].completed;
+            renderSidebar();
+            updateUI();
+            showToast(daysData[currentDayIndex].completed ? "Day Secured! Empire building in progress. 🏛️" : "Day marked as pending.");
+            
+            if(daysData[currentDayIndex].completed && currentDayIndex < 89) {
+                setTimeout(() => selectDay(currentDayIndex + 1), 600);
+            }
+        }
+
+        // --- UTILS & INTERACTIVITY ---
+        
+        function copyToClipboard(elementId) {
+            const text = document.getElementById(elementId).innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                showToast("Caption copied to clipboard!");
+            });
+        }
+
+        function copyText(el) {
+            let text = "";
+            for (let node of el.childNodes) {
+                if (node.nodeType === 3) { text += node.nodeValue; }
+            }
+            if(!text.trim() && el.querySelector('p')) {
+                text = el.querySelector('p').innerText; 
+            }
+            navigator.clipboard.writeText(text.trim()).then(() => {
+                showToast("Copied successfully!");
+            });
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-msg').innerText = msg;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+
+        function setupInteractivity() {
+            // 3D Tilt Cards
+            const tiltWrappers = document.querySelectorAll('.tilt-wrapper');
+            tiltWrappers.forEach(wrapper => {
+                const inner = wrapper.querySelector('.tilt-element');
+                wrapper.addEventListener('mousemove', (e) => {
+                    const rect = wrapper.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    const rotateX = ((y - centerY) / centerY) * -15;
+                    const rotateY = ((x - centerX) / centerX) * 15;
+                    inner.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.05, 1.05, 1.05)`;
+                });
+                wrapper.addEventListener('mouseleave', () => {
+                    inner.style.transform = `rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+                });
+            });
+
+            // Radial Glow Hover on Cards
+            document.getElementById("stats-grid").onmousemove = e => {
+                for(const card of document.querySelectorAll(".glass-card")) {
+                    const rect = card.getBoundingClientRect(),
+                          x = e.clientX - rect.left,
+                          y = e.clientY - rect.top;
+                    card.style.setProperty("--mouse-x", `${x}px`);
+                    card.style.setProperty("--mouse-y", `${y}px`);
+                }
+            }
+        }
+
+        // --- EXPORT PDF ---
+        function exportToPDF() {
+            showToast("Generating Full Quarter Blueprint... Please wait.");
+            const element = document.getElementById('export-content');
+            
+            element.classList.add('bg-white', 'text-black', 'p-8');
+            const glassCards = element.querySelectorAll('.glass-card, .bg-\\[\\#080808\\], .bg-\\[\\#0a0a0a\\], .bg-\\[\\#0f0f0f\\], .bg-\\[\\#050505\\]');
+            glassCards.forEach(card => card.classList.add('!bg-gray-50', '!text-black', '!border-gray-200'));
+            
+            const textElements = element.querySelectorAll('.text-white, .text-gray-300, .text-gray-400');
+            textElements.forEach(txt => txt.classList.add('!text-gray-800'));
+
+            document.querySelectorAll('.print-only').forEach(el => el.style.display = 'block');
+
+            const opt = {
+                margin:       10,
+                filename:     `OWNIT_90_Day_Authority_${clinicName.replace(/\s+/g, '_')}.pdf`,
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2, useCORS: true, ignoreElements: (el) => el.hasAttribute('data-html2canvas-ignore') },
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            html2pdf().set(opt).from(element).save().then(() => {
+                element.classList.remove('bg-white', 'text-black', 'p-8');
+                glassCards.forEach(card => card.classList.remove('!bg-gray-50', '!text-black', '!border-gray-200'));
+                textElements.forEach(txt => txt.classList.remove('!text-gray-800'));
+                document.querySelectorAll('.print-only').forEach(el => el.style.display = 'none');
+                showToast("Quarter Blueprint Downloaded successfully! 🏛️");
+            });
+        }
+
+        // Run
+        init();
+
+    </script>
+</body>
+</html>

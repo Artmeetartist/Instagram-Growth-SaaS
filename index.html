@@ -34,6 +34,11 @@
                         'float-social-1': 'floatSocial 8s ease-in-out infinite',
                         'float-social-2': 'floatSocial 10s ease-in-out 2s infinite',
                         'float-social-3': 'floatSocial 12s ease-in-out 4s infinite',
+                        'shimmer': 'shimmer 2s infinite linear',
+                        'dash-cursor': 'dashCursor 6s ease-in-out infinite',
+                        'glass-sweep': 'glassSweep 6s ease-in-out infinite',
+                        'pulse-fast': 'pulseFast 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'task-glow': 'taskGlow 4s ease-in-out infinite',
                     },
                     keyframes: {
                         blob: {
@@ -54,6 +59,31 @@
                             '20%': { opacity: 1 },
                             '80%': { opacity: 1 },
                             '100%': { transform: 'translateY(-300px) scale(1.5) rotate(25deg)', opacity: 0 },
+                        },
+                        shimmer: {
+                            '0%': { backgroundPosition: '-200% 0' },
+                            '100%': { backgroundPosition: '200% 0' },
+                        },
+                        dashCursor: {
+                            '0%': { top: '20%', left: '10%', opacity: 0 },
+                            '10%': { opacity: 1 },
+                            '30%': { top: '40%', left: '70%' },
+                            '60%': { top: '80%', left: '30%' },
+                            '90%': { opacity: 1 },
+                            '100%': { top: '20%', left: '10%', opacity: 0 },
+                        },
+                        glassSweep: {
+                            '0%': { transform: 'translateX(-200%) skewX(-20deg)', opacity: 0 },
+                            '20%': { transform: 'translateX(200%) skewX(-20deg)', opacity: 0.5 },
+                            '100%': { transform: 'translateX(200%) skewX(-20deg)', opacity: 0 },
+                        },
+                        pulseFast: {
+                            '0%, 100%': { opacity: 1 },
+                            '50%': { opacity: 0.4 },
+                        },
+                        taskGlow: {
+                            '0%, 100%': { borderColor: 'rgba(255,255,255,0.05)', backgroundColor: 'rgba(17,17,20,1)' },
+                            '50%': { borderColor: 'rgba(188,24,136,0.3)', backgroundColor: 'rgba(188,24,136,0.05)' },
                         }
                     }
                 }
@@ -94,7 +124,7 @@
         .noise-overlay {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             pointer-events: none; z-index: 9999; opacity: 0.04;
-            background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyBAMAAADsEZWCAAAAGFBMVEUAAAAAAP///8B//8AAAAAAAAAAAAAAAAAAAIwH9OIAAAACXRSTlMAm5+fyQAAAjBJREFUOMt1k0tPwkAQx/c0NGAob0Ep1KqXGvXg0kOTB5tGgyExgRjE1EQTw6En/f5f0tJ2g+Gwk/m/2/nN7O4swN94wP10Bf+G28ALwT2C/10vDODX4B7Bf68X9uDX4B7Bf68XDuDX4B7Bf68XjuDX4B7Bf68XTuDX4B7Bf68XzuDX4B7Bf68XLuDX4B7Bf68XruDX4B7Bf68XbuDX4B7Bf68X7uDX4B7Bf68XHuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68X/wD39vXCAH8D94g/BPh7vXAAfwP3iD8E+Hu9cAB/A/eIPwT4e71wAH8D94g/BPh7vXAAfwP3iD8E+Hu9cAB/A/eIPwT4e71wAH8D94g/BPh7vXCAvwD8b46gN4n+2QAAAABJRU5ErkJggg==");
+            background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyBAMAAADsEZWCAAAAGFBMVEUAAAAAAP///8B//8AAAAAAAAAAAAAAAAAAAIwH9OIAAAACXRSTlMAm5+fyQAAAjBJREFUOMt1k0tPwkAQx/c0NGAob0Ep1KqXGvXg0kOTB5tGgyExgRjE1EQTw6En/f5f0tJ2g+Gwk/m/2/nN7O4swN94wP10Bf+G28ALwT2C/10vDODX4B7Bf68X9uDX4B7Bf68XDuDX4B7Bf68XjuDX4B7Bf68XTuDX4B7Bf68XzuDX4B7Bf68XLuDX4B7Bf68XruDX4B7Bf68XbuDX4B7Bf68X7uDX4B7Bf68XHuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68XnuDX4B7Bf68X/wD39vXCAH8D94g/BPh7vXAAfwP3iD8E+Hu9cAB/A/eIPwT4e71wAH8D94g/BPh7vXAAfwP3iD8E+Hu9cAB/A/eIPwT4e71wAH8D94g/BPh7vXCAvwD8b46gN4n+2QAAAABJRU5ErkJggg==");
             background-repeat: repeat; transform: translateZ(0); will-change: transform;
         }
         
@@ -217,6 +247,25 @@
 
         .sketch-path { stroke-dasharray: 10 6; animation: dashMove 20s linear infinite; }
         @keyframes dashMove { to { stroke-dashoffset: -1000; } }
+
+        /* Dashboard Internal Animations */
+        .chart-line-infinite {
+            stroke-dasharray: 300; stroke-dashoffset: 300;
+            animation: drawChartInfinite 4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+        }
+        @keyframes drawChartInfinite {
+            0% { stroke-dashoffset: 300; } 50% { stroke-dashoffset: 0; } 100% { stroke-dashoffset: 0; }
+        }
+        .animate-float-1 { animation: floatUp 4s ease-in-out infinite; will-change: transform, opacity; }
+        .animate-float-2 { animation: floatUp 4s ease-in-out 1.2s infinite; will-change: transform, opacity; }
+        .animate-float-3 { animation: floatUp 4s ease-in-out 2.4s infinite; will-change: transform, opacity; }
+        .animate-float-4 { animation: floatUp 4s ease-in-out 3.6s infinite; will-change: transform, opacity; }
+        @keyframes floatUp {
+            0% { opacity: 0; transform: translateY(20px) scale(0.9); }
+            20% { opacity: 1; transform: translateY(0px) scale(1); }
+            80% { opacity: 1; transform: translateY(-40px) scale(1); }
+            100% { opacity: 0; transform: translateY(-60px) scale(0.9); }
+        }
     </style>
 </head>
 <body class="antialiased selection:bg-igPink selection:text-white">
@@ -305,35 +354,55 @@
             </div>
         </div>
 
-        <!-- 3D Interactive Mockup (Responsive) -->
+        <!-- 3D Interactive Creator Dashboard Mockup -->
         <div class="w-full max-w-5xl tilt-wrapper reveal" style="transition-delay: 0.3s;">
             <div class="tilt-element w-full md:aspect-[16/9] rounded-2xl bg-[#0a0a0c] border border-gray-800 hero-mockup overflow-hidden relative group">
+                
+                <!-- Continuous Glass Light Sweep -->
+                <div class="absolute inset-0 w-1/2 h-full bg-gradient-to-r from-transparent via-white/5 to-transparent skew-x-[-20deg] animate-glass-sweep pointer-events-none z-30"></div>
+
                 <!-- Mockup Header -->
-                <div class="h-12 border-b border-gray-800 flex items-center px-4 gap-2 bg-[#050507]">
+                <div class="h-12 border-b border-gray-800 flex items-center px-4 gap-2 bg-[#050507] relative z-20">
                     <div class="flex gap-1.5">
-                        <div class="w-3 h-3 rounded-full bg-red-500/80"></div>
-                        <div class="w-3 h-3 rounded-full bg-yellow-500/80"></div>
-                        <div class="w-3 h-3 rounded-full bg-green-500/80"></div>
+                        <div class="w-3 h-3 rounded-full bg-red-500/80 hover:scale-125 transition-transform cursor-pointer"></div>
+                        <div class="w-3 h-3 rounded-full bg-yellow-500/80 hover:scale-125 transition-transform cursor-pointer"></div>
+                        <div class="w-3 h-3 rounded-full bg-green-500/80 hover:scale-125 transition-transform cursor-pointer"></div>
                     </div>
-                    <div class="mx-auto px-10 md:px-20 py-1 rounded-md bg-gray-900/80 text-[10px] text-gray-500 font-mono border border-gray-800/50 truncate max-w-[200px] md:max-w-none text-center">app.ownit.so/dashboard</div>
+                    <div class="mx-auto px-10 md:px-20 py-1 rounded-md bg-gray-900/80 text-[10px] text-gray-500 font-mono border border-gray-800/50 truncate max-w-[200px] md:max-w-none text-center">www.ownit.com/dashboard</div>
                 </div>
+                
                 <!-- Mockup Content -->
-                <div class="p-5 md:p-8 flex flex-col md:grid md:grid-cols-3 gap-6 h-full relative">
+                <div id="creator-dashboard" class="p-5 md:p-8 flex flex-col md:grid md:grid-cols-3 gap-6 h-full relative cursor-default">
                     
-                    <div class="md:col-span-2 space-y-6">
+                    <!-- Simulated Live Cursor -->
+                    <div class="hidden md:flex absolute z-50 animate-dash-cursor pointer-events-none drop-shadow-2xl flex-col items-start">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="drop-shadow-lg">
+                            <path d="M5.5 3.21V20.8c0 .45.54.67.85.35l4.86-4.86a.5.5 0 01.35-.15h6.42c.45 0 .67-.54.35-.85L6.35 3.21a.5.5 0 00-.85.35z" fill="white" stroke="#bc1888" stroke-width="1.5"/>
+                        </svg>
+                        <div class="bg-igPink text-white text-[9px] font-bold px-2 py-0.5 rounded shadow-lg whitespace-nowrap ml-4 -mt-1 border border-white/20">
+                            Auto-posting to IG...
+                        </div>
+                    </div>
+                    
+                    <div class="md:col-span-2 space-y-6 relative z-10">
                         <div class="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-4">
                             <div>
-                                <h3 class="font-display text-xl md:text-2xl text-white font-bold">Creator Dashboard</h3>
+                                <h3 class="font-display text-xl md:text-2xl text-white font-bold flex items-center gap-2">
+                                    Creator Dashboard
+                                </h3>
                                 <div class="flex items-center gap-2 mt-2">
-                                    <span class="px-2 py-0.5 bg-gray-800/50 text-[10px] text-gray-300 rounded font-mono border border-gray-700/50 flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-igPink animate-pulse"></span> Viral Ready</span>
+                                    <span class="px-2 py-0.5 bg-igPink/10 text-[10px] text-igPink rounded font-mono border border-igPink/20 flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-igPink animate-pulse-fast"></span> LIVE SYNC</span>
+                                    <span class="px-2 py-0.5 bg-green-500/10 text-[10px] text-green-400 rounded font-mono border border-green-500/20 flex items-center gap-1.5"><i class="ph-bold ph-check"></i> System Optimal</span>
                                 </div>
                             </div>
                             <div class="flex gap-4 text-xs font-mono text-gray-400 bg-gray-900/50 p-2 rounded-lg border border-gray-800/50 sm:bg-transparent sm:border-none sm:p-0">
-                                <div><span class="text-igOrange font-bold">+1,240</span> Followers</div>
-                                <div><span class="text-green-400 font-bold">+12</span> Bookings</div>
+                                <div><span id="dash-followers" class="text-igOrange font-bold inline-block transition-transform duration-200">+1,240</span> Followers</div>
+                                <div><span id="dash-bookings" class="text-green-400 font-bold inline-block transition-transform duration-200">+12</span> Bookings</div>
                             </div>
                         </div>
-                        <div class="h-32 md:h-40 w-full bg-gradient-to-t from-gray-900/30 to-transparent border border-gray-800/50 rounded-xl relative overflow-hidden flex items-end">
+
+                        <!-- Main Chart Area -->
+                        <div class="h-32 md:h-40 w-full bg-gradient-to-t from-gray-900/30 to-transparent border border-gray-800/50 rounded-xl relative overflow-hidden flex items-end hover:border-gray-700/80 transition-colors">
                             <!-- Animated High-Quality Chart -->
                             <svg class="absolute bottom-0 w-full h-full text-igPink" preserveAspectRatio="none" viewBox="0 0 100 100">
                                 <defs>
@@ -360,34 +429,67 @@
                             <div class="absolute bottom-20 right-[15%] bg-brandViolet/20 border border-brandViolet/50 text-brandViolet text-[9px] md:text-[10px] px-2.5 py-1 rounded-full shadow-[0_0_15px_rgba(139,92,246,0.3)] flex items-center gap-1 animate-float-3 backdrop-blur-md font-medium">
                                 <i class="ph-fill ph-calendar-check"></i> +1 Booking
                             </div>
-                        </div>
-                        <div class="grid grid-cols-2 gap-4">
-                            <div class="h-20 md:h-24 bg-gray-900/40 border border-gray-800/50 rounded-xl p-3 md:p-4 flex flex-col justify-between">
-                                <span class="text-[9px] md:text-[10px] text-gray-500 uppercase tracking-widest leading-tight">Viral Reel AI</span>
-                                <div class="w-full sm:w-2/3 h-1.5 md:h-2 bg-gray-800/50 rounded-full overflow-hidden mt-2"><div class="w-full h-full ig-gradient-bg animate-pulse"></div></div>
+                            <div class="absolute bottom-4 right-[30%] bg-accent/20 border border-accent/50 text-accent text-[9px] md:text-[10px] px-2.5 py-1 rounded-full shadow-[0_0_15px_rgba(79,172,254,0.3)] flex items-center gap-1 animate-float-4 backdrop-blur-md font-medium">
+                                <i class="ph-fill ph-trend-up"></i> Reach Spike
                             </div>
-                            <div class="h-20 md:h-24 bg-gray-900/40 border border-gray-800/50 rounded-xl p-3 md:p-4 flex flex-col justify-between relative overflow-hidden">
+                        </div>
+
+                        <!-- Mini Interaction Cards -->
+                        <div class="grid grid-cols-2 gap-4">
+                            <!-- Interactive AI Button -->
+                            <div class="h-20 md:h-24 bg-[#111114] border border-gray-800/50 hover:border-igPink/50 rounded-xl p-3 md:p-4 flex flex-col justify-between cursor-pointer group/btn transition-all duration-300 relative overflow-hidden" onclick="this.querySelector('.btn-text').innerText = 'Generating...'; setTimeout(()=> this.querySelector('.btn-text').innerText = 'Ready to Post!', 1500)">
+                                <div class="absolute inset-0 bg-igPink/5 opacity-0 group-hover/btn:opacity-100 transition-opacity"></div>
+                                <span class="text-[9px] md:text-[10px] text-gray-400 uppercase tracking-widest leading-tight flex justify-between items-center z-10">
+                                    Viral Reel AI <i class="ph-bold ph-magic-wand group-hover/btn:text-igPink transition-colors"></i>
+                                </span>
+                                <div class="w-full h-2 md:h-2.5 bg-gray-800/50 rounded-full overflow-hidden mt-2 relative z-10 border border-gray-700">
+                                    <div class="absolute inset-0 ig-gradient-bg animate-shimmer" style="background-size: 200% 100%;"></div>
+                                </div>
+                                <span class="btn-text text-[9px] text-gray-500 mt-1 z-10 text-center font-medium group-hover/btn:text-gray-300">Click to deploy</span>
+                            </div>
+
+                            <div class="h-20 md:h-24 bg-gray-900/40 border border-gray-800/50 rounded-xl p-3 md:p-4 flex flex-col justify-between relative overflow-hidden hover:bg-gray-800/40 transition-colors">
                                 <div class="absolute inset-0 bg-gradient-to-r from-[#f09433]/10 to-[#bc1888]/10 pointer-events-none"></div>
                                 <span class="text-[9px] md:text-[10px] text-gray-500 uppercase tracking-widest z-10 leading-tight">IG DM Auto</span>
-                                <span class="text-white font-display text-lg md:text-xl z-10 mt-auto">Active</span>
+                                <div class="flex items-center gap-2 mt-auto z-10">
+                                    <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse-fast shadow-[0_0_8px_#22c55e]"></span>
+                                    <span class="text-white font-display text-lg md:text-xl">Active</span>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="md:col-span-1 border-t md:border-t-0 md:border-l border-gray-800/50 pt-6 md:pt-0 md:pl-6 space-y-4">
-                        <h4 class="text-xs text-gray-500 uppercase tracking-widest mb-2 md:mb-4">Today's Action</h4>
-                        <div class="p-3 border border-gray-800/50 rounded-lg bg-gray-900/30">
-                            <div class="w-16 h-16 md:h-20 bg-gray-800/50 rounded mb-2 overflow-hidden relative">
-                                <i class="ph-fill ph-play-circle text-gray-600 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-2xl"></i>
+
+                    <!-- Right Column: Sequenced Checklist -->
+                    <div class="md:col-span-1 border-t md:border-t-0 md:border-l border-gray-800/50 pt-6 md:pt-0 md:pl-6 space-y-4 relative z-10">
+                        <h4 class="text-xs text-gray-400 uppercase tracking-widest mb-2 md:mb-4 flex items-center justify-between font-bold">
+                            Today's Action <i class="ph-bold ph-arrows-clockwise text-igPink animate-spin" style="animation-duration: 3s;"></i>
+                        </h4>
+                        
+                        <div class="space-y-3">
+                            <!-- Task 1 (Completed) -->
+                            <div class="p-3 border border-green-500/30 rounded-lg bg-green-500/5 flex items-center gap-3 transition-colors shadow-sm">
+                                <div class="w-8 h-8 rounded-full bg-green-500/20 flex items-center justify-center text-green-400 border border-green-500/30"><i class="ph-bold ph-check"></i></div>
+                                <div class="flex-1">
+                                    <div class="text-xs text-white font-medium mb-0.5">Analyze Market</div>
+                                    <div class="text-[9px] text-gray-500">Done at 08:00 AM</div>
+                                </div>
                             </div>
-                            <div class="h-2 w-full bg-gray-700/50 rounded mb-1"></div>
-                            <div class="h-2 w-2/3 bg-gray-700/50 rounded"></div>
-                        </div>
-                        <div class="hidden md:block p-3 border border-gray-800/50 rounded-lg bg-gray-900/30 opacity-50">
-                            <div class="flex gap-2 items-center mb-2">
-                                <div class="w-6 h-6 rounded-full bg-gray-800/50"></div>
-                                <div class="h-2 w-16 bg-gray-700/50 rounded"></div>
+                            <!-- Task 2 (Active/Glowing) -->
+                            <div class="p-3 border border-gray-800/50 rounded-lg bg-[#111114] flex items-center gap-3 animate-task-glow shadow-sm">
+                                <div class="w-8 h-8 rounded-full bg-igPink/20 flex items-center justify-center text-igPink border border-igPink/30"><i class="ph-fill ph-pen-nib"></i></div>
+                                <div class="flex-1">
+                                    <div class="text-xs text-white font-medium mb-1">Write Viral Script</div>
+                                    <div class="h-1 w-full bg-gray-800 rounded overflow-hidden"><div class="h-full bg-igPink w-3/4"></div></div>
+                                </div>
                             </div>
-                            <div class="h-2 w-full bg-gray-700/50 rounded mb-1"></div>
+                            <!-- Task 3 (Pending) -->
+                            <div class="p-3 border border-gray-800/30 rounded-lg bg-gray-900/30 flex items-center gap-3 opacity-60">
+                                <div class="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center text-gray-500 border border-gray-700"><i class="ph-bold ph-scissors"></i></div>
+                                <div class="flex-1">
+                                    <div class="h-2 w-3/4 bg-gray-700 rounded mb-1"></div>
+                                    <div class="h-1.5 w-1/2 bg-gray-800 rounded"></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -967,6 +1069,42 @@
                     nav.classList.add('py-4');
                 }
             }, { passive: true });
+
+            // Dashboard Stats Cycling Animation
+            const dashFollowers = document.getElementById('dash-followers');
+            const dashBookings = document.getElementById('dash-bookings');
+            const dashboardMockup = document.getElementById('creator-dashboard');
+
+            if (dashboardMockup && dashFollowers && dashBookings) {
+                let followersBase = 1240;
+                let bookingsBase = 12;
+                
+                dashboardMockup.addEventListener('mouseenter', () => {
+                    dashboardMockup.statsInterval = setInterval(() => {
+                        followersBase += Math.floor(Math.random() * 5) + 1;
+                        if(Math.random() > 0.7) bookingsBase += 1;
+                        
+                        dashFollowers.innerText = `+${followersBase.toLocaleString()}`;
+                        dashBookings.innerText = `+${bookingsBase}`;
+                        
+                        dashFollowers.style.transform = 'scale(1.15)';
+                        dashFollowers.style.color = '#ffffff';
+                        dashBookings.style.transform = 'scale(1.15)';
+                        dashBookings.style.color = '#ffffff';
+                        
+                        setTimeout(() => {
+                            dashFollowers.style.transform = 'scale(1)';
+                            dashFollowers.style.color = '';
+                            dashBookings.style.transform = 'scale(1)';
+                            dashBookings.style.color = '';
+                        }, 200);
+                    }, 800);
+                });
+
+                dashboardMockup.addEventListener('mouseleave', () => {
+                    clearInterval(dashboardMockup.statsInterval);
+                });
+            }
         });
     </script>
 </body>

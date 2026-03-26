@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OWNIT | 60-Day Scaling OS Dashboard</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        darkBg: '#050505',
+                        panelBg: '#0a0a0a',
+                        primary: '#00f2fe', // Electric Cyan
+                        primaryHover: '#00c3cc',
+                        accent: '#4facfe', // Vibrant Blue
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Clash Display', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://api.fontshare.com/v2/css?f[]=clash-display@600,700,800&display=swap" rel="stylesheet">
+    
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <!-- html2pdf.js for Export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #050505;
+            color: #f3f4f6;
+            overflow: hidden; /* App-like feel */
+        }
+
+        h1, h2, h3, h4, .font-display {
+            font-family: 'Clash Display', sans-serif;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: rgba(10, 10, 10, 0.5); }
+        ::-webkit-scrollbar-thumb { background: rgba(0, 242, 254, 0.3); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(0, 242, 254, 0.6); }
+
+        /* Glassmorphism utilities */
+        .glass-panel {
+            background: rgba(10, 10, 10, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .glass-card {
+            background: linear-gradient(145deg, rgba(20, 20, 20, 0.6) 0%, rgba(10, 10, 10, 0.8) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+            transition: border-color 0.3s ease;
+        }
+        .glass-card:hover {
+            border-color: rgba(0, 242, 254, 0.2);
+        }
+
+        /* Ambient Background Glows */
+        .bg-glow-1 {
+            position: absolute; top: -10%; left: -10%; width: 40vw; height: 40vw;
+            background: radial-gradient(circle, rgba(0,242,254,0.1) 0%, rgba(0,0,0,0) 70%);
+            z-index: -1; pointer-events: none;
+        }
+        .bg-glow-2 {
+            position: absolute; bottom: -10%; right: -10%; width: 50vw; height: 50vw;
+            background: radial-gradient(circle, rgba(79,172,254,0.1) 0%, rgba(0,0,0,0) 70%);
+            z-index: -1; pointer-events: none;
+        }
+
+        .tab-active {
+            background: linear-gradient(90deg, rgba(0, 242, 254, 0.1) 0%, transparent 100%);
+            border-left: 3px solid #00f2fe;
+            color: #fff;
+        }
+
+        /* Transitions */
+        .fade-in { animation: fadeIn 0.4s ease-in-out; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .print-only { display: none; }
+    </style>
+</head>
+<body class="h-screen flex overflow-hidden selection:bg-primary selection:text-black">
+    
+    <!-- Ambient Backgrounds -->
+    <div class="bg-glow-1"></div>
+    <div class="bg-glow-2"></div>
+
+    <!-- LEFT SIDEBAR: 60 Days System -->
+    <aside class="w-72 glass-panel h-full flex flex-col border-r border-gray-800 z-10 flex-shrink-0">
+        <!-- Logo Area -->
+        <div class="p-6 border-b border-gray-800 flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-white flex items-center justify-center shadow-[0_0_15px_rgba(0,242,254,0.3)]">
+                <i class="ph-bold ph-lightning text-black text-xl"></i>
+            </div>
+            <div>
+                <h1 class="font-display font-bold text-xl tracking-wide text-white leading-tight">OWNIT</h1>
+                <p class="text-[10px] uppercase tracking-widest text-primary font-bold">60-Day OS</p>
+            </div>
+        </div>
+
+        <!-- Progress Tracker -->
+        <div class="p-5 border-b border-gray-800">
+            <div class="flex justify-between text-xs mb-2 text-gray-400 font-medium">
+                <span>Scaling Progress</span>
+                <span id="progress-text" class="text-primary font-bold">0%</span>
+            </div>
+            <div class="w-full bg-gray-900 rounded-full h-1.5 overflow-hidden">
+                <div id="progress-bar" class="bg-gradient-to-r from-primary to-accent h-1.5 rounded-full transition-all duration-500 w-0 shadow-[0_0_10px_#00f2fe]"></div>
+            </div>
+            <p class="text-[10px] text-gray-500 mt-2 text-center"><span id="completed-count">0</span> of 60 Days Completed</p>
+        </div>
+
+        <!-- Days List -->
+        <div class="flex-1 overflow-y-auto py-2 px-3 space-y-1" id="days-list">
+            <!-- JS will inject 60 days here -->
+        </div>
+        
+        <!-- Bottom Settings/Export -->
+        <div class="p-4 border-t border-gray-800">
+            <button onclick="exportToPDF()" class="w-full py-2.5 px-4 bg-gray-900 hover:bg-white hover:text-black text-sm font-bold rounded-lg text-white transition-all duration-300 flex items-center justify-center gap-2 border border-gray-700 hover:border-white group">
+                <i class="ph-bold ph-download-simple text-lg group-hover:text-black"></i> Export Execution Plan
+            </button>
+        </div>
+    </aside>
+
+    <!-- MAIN DASHBOARD -->
+    <main class="flex-1 h-full flex flex-col relative overflow-y-auto" id="main-scroll-area">
+        
+        <!-- Top Navbar & AI Configuration -->
+        <header class="sticky top-0 z-20 glass-panel border-b border-gray-800 px-8 py-4 flex justify-between items-center">
+            <div>
+                <h2 class="text-2xl font-display font-bold text-white tracking-tight">The Scaler Dashboard</h2>
+                <p class="text-sm text-gray-400 mt-1">Advanced Domination & Competitor Hijacking System</p>
+            </div>
+            
+            <!-- AI Integration Simulation (Dynamic Customization) -->
+            <div class="flex gap-4 items-center bg-gray-900/80 p-2 rounded-xl border border-gray-800">
+                <div class="flex items-center gap-2 px-3 border-r border-gray-800">
+                    <i class="ph-fill ph-magic-wand text-primary animate-pulse"></i>
+                    <span class="text-xs font-bold text-gray-300 uppercase tracking-wider">AI Config</span>
+                </div>
+                <input type="text" id="input-clinic" placeholder="Enter Clinic Name" value="Elite Dental" 
+                    class="bg-transparent border-none text-sm text-white placeholder-gray-600 focus:ring-0 focus:outline-none w-36 font-medium">
+                <div class="w-px h-5 bg-gray-800"></div>
+                <input type="text" id="input-city" placeholder="Enter City" value="Bangalore" 
+                    class="bg-transparent border-none text-sm text-white placeholder-gray-600 focus:ring-0 focus:outline-none w-32 font-medium">
+            </div>
+        </header>
+
+        <div class="p-8 max-w-7xl mx-auto w-full space-y-8 pb-20" id="export-content">
+            
+            <!-- Export Header (Hidden in UI, visible in PDF) -->
+            <div class="print-only text-center mb-8 border-b border-gray-200 pb-4">
+                <h1 class="text-3xl font-bold text-black font-display" id="print-title">OWNIT 60-Day Scaling Plan</h1>
+                <p class="text-gray-600 mt-2">Generated for <span id="print-clinic" class="font-bold"></span>, <span id="print-city"></span></p>
+            </div>
+
+            <!-- Stats Row (60-Day Targets) -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-5" data-html2canvas-ignore>
+                <div class="glass-card p-5 rounded-2xl flex items-start justify-between group">
+                    <div>
+                        <p class="text-gray-500 text-[10px] font-bold uppercase tracking-widest mb-1">Followers Target</p>
+                        <h3 class="text-3xl font-display font-bold text-white">200,000</h3>
+                        <p class="text-primary text-xs mt-2 flex items-center gap-1 font-medium"><i class="ph-bold ph-trend-up"></i> Accelerated Growth</p>
+                    </div>
+                    <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
+                        <i class="ph-fill ph-users text-xl"></i>
+                    </div>
+                </div>
+                <div class="glass-card p-5 rounded-2xl flex items-start justify-between group">
+                    <div>
+                        <p class="text-gray-500 text-[10px] font-bold uppercase tracking-widest mb-1">High-Intent Leads</p>
+                        <h3 class="text-3xl font-display font-bold text-white">1,500+</h3>
+                        <p class="text-accent text-xs mt-2 flex items-center gap-1 font-medium"><i class="ph-bold ph-target"></i> via DM Automation</p>
+                    </div>
+                    <div class="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center text-accent group-hover:scale-110 transition-transform">
+                        <i class="ph-fill ph-magnet text-xl"></i>
+                    </div>
+                </div>
+                <div class="glass-card p-5 rounded-2xl flex items-start justify-between group relative overflow-hidden">
+                    <div class="absolute -right-4 -bottom-4 w-24 h-24 bg-green-500/10 rounded-full blur-xl"></div>
+                    <div class="relative z-10">
+                        <p class="text-gray-500 text-[10px] font-bold uppercase tracking-widest mb-1">Daily Bookings</p>
+                        <h3 class="text-3xl font-display font-bold text-white">15-25</h3>
+                        <p class="text-green-400 text-xs mt-2 flex items-center gap-1 font-medium"><i class="ph-bold ph-calendar-check"></i> High Ticket Focus</p>
+                    </div>
+                    <div class="w-10 h-10 rounded-full bg-green-500/10 flex items-center justify-center text-green-400 group-hover:scale-110 transition-transform relative z-10">
+                        <i class="ph-fill ph-calendar-plus text-xl"></i>
+                    </div>
+                </div>
+                <div class="glass-card p-5 rounded-2xl flex items-start justify-between group">
+                    <div>
+                        <p class="text-gray-500 text-[10px] font-bold uppercase tracking-widest mb-1">Market Share</p>
+                        <h3 class="text-3xl font-display font-bold text-white">#1</h3>
+                        <p class="text-purple-400 text-xs mt-2 flex items-center gap-1 font-medium"><i class="ph-bold ph-crown"></i> In your City</p>
+                    </div>
+                    <div class="w-10 h-10 rounded-full bg-purple-500/10 flex items-center justify-center text-purple-400 group-hover:scale-110 transition-transform">
+                        <i class="ph-fill ph-trophy text-xl"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MAIN CONTENT AREA: TWO COLUMNS -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                
+                <!-- LEFT COLUMN: The Daily Content Engine -->
+                <div class="lg:col-span-2 space-y-6">
+                    
+                    <div class="flex justify-between items-center" data-html2canvas-ignore>
+                        <h3 class="text-2xl font-display font-bold text-white flex items-center gap-3">
+                            <span class="w-2 h-8 bg-primary rounded-full shadow-[0_0_10px_#00f2fe]"></span>
+                            <span id="display-day-title">Day 1 Execution Plan</span>
+                        </h3>
+                        <button onclick="toggleDayCompletion()" id="btn-complete" class="px-5 py-2.5 bg-gray-900 hover:bg-white hover:text-black text-gray-300 rounded-lg text-sm font-bold transition-all border border-gray-700 flex items-center gap-2 group">
+                            <i class="ph-bold ph-check-circle text-lg group-hover:text-green-500 transition-colors"></i> Mark Complete
+                        </button>
+                    </div>
+
+                    <!-- Day Content Card -->
+                    <div class="glass-card rounded-2xl border border-gray-800 overflow-hidden fade-in" id="content-engine">
+                        <!-- Header Banner -->
+                        <div class="bg-gradient-to-r from-gray-900 to-[#050505] p-6 border-b border-gray-800 flex justify-between items-center relative overflow-hidden">
+                            <div class="absolute right-0 top-0 w-64 h-full bg-primary/5 blur-[50px] pointer-events-none"></div>
+                            <div class="relative z-10">
+                                <span id="content-type-badge" class="px-3 py-1 bg-primary/10 text-primary text-[10px] font-bold uppercase tracking-widest rounded-full border border-primary/20 inline-block mb-3">Educational</span>
+                                <h4 id="reel-idea" class="text-xl font-display font-bold text-white leading-tight">Loading Concept...</h4>
+                            </div>
+                            <div class="text-right relative z-10">
+                                <p class="text-[10px] text-gray-500 uppercase tracking-widest font-bold mb-1">Post Time</p>
+                                <p id="posting-time" class="text-white font-bold text-lg flex items-center justify-end gap-1.5"><i class="ph-fill ph-clock text-primary"></i> 6:30 PM</p>
+                            </div>
+                        </div>
+
+                        <div class="p-6 space-y-6 bg-[#080808]">
+                            <!-- Hook & Script Grid -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <!-- Hook -->
+                                <div class="bg-[#0a0a0a] rounded-xl p-5 border border-gray-800 relative group">
+                                    <div class="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity rounded-xl"></div>
+                                    <h5 class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-3 flex items-center gap-2"><i class="ph-fill ph-fishing-rod text-primary text-lg"></i> 3-Second Visual Hook</h5>
+                                    <p id="hook-text" class="text-white text-lg font-medium leading-snug">"..."</p>
+                                </div>
+                                <!-- CTA -->
+                                <div class="bg-[#0a0a0a] rounded-xl p-5 border border-gray-800 relative group">
+                                    <div class="absolute inset-0 bg-accent/5 opacity-0 group-hover:opacity-100 transition-opacity rounded-xl"></div>
+                                    <h5 class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-3 flex items-center gap-2"><i class="ph-fill ph-cursor-click text-accent text-lg"></i> Automation CTA</h5>
+                                    <p id="cta-text" class="text-white text-md font-medium leading-snug">...</p>
+                                </div>
+                            </div>
+
+                            <!-- Script -->
+                            <div>
+                                <h5 class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-3 flex items-center gap-2"><i class="ph-fill ph-video-camera text-primary text-lg"></i> Fast-Paced Script (15-20s)</h5>
+                                <div class="bg-[#0f0f0f] rounded-xl p-6 border border-gray-800 border-l-4 border-l-primary relative">
+                                    <i class="ph-fill ph-quotes text-5xl text-gray-800/50 absolute top-4 right-4 pointer-events-none"></i>
+                                    <p id="script-text" class="text-gray-300 text-sm leading-relaxed relative z-10 whitespace-pre-line font-medium">...</p>
+                                </div>
+                            </div>
+
+                            <!-- Caption & Hashtags -->
+                            <div class="bg-[#0a0a0a] rounded-xl p-6 border border-gray-800">
+                                <div class="flex justify-between items-center mb-4">
+                                    <h5 class="text-[10px] font-bold text-gray-500 uppercase tracking-widest flex items-center gap-2"><i class="ph-fill ph-text-align-left text-gray-400 text-lg"></i> SEO-Optimized Caption</h5>
+                                    <button class="text-xs text-primary hover:text-white font-bold uppercase tracking-wider transition-colors flex items-center gap-1" onclick="copyToClipboard('caption-text')" data-html2canvas-ignore><i class="ph-bold ph-copy"></i> Copy</button>
+                                </div>
+                                <p id="caption-text" class="text-gray-400 text-sm leading-relaxed mb-5 whitespace-pre-line">...</p>
+                                
+                                <div class="pt-5 border-t border-gray-800/50">
+                                    <h5 class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2 flex items-center gap-2"><i class="ph-fill ph-hash text-accent text-lg"></i> Geo-Targeted Hashtags</h5>
+                                    <p id="hashtags-text" class="text-primary text-sm font-medium">...</p>
+                                </div>
+                            </div>
+
+                            <!-- Story & Engagement -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="bg-[#0a0a0a] rounded-xl p-5 border border-gray-800">
+                                    <h5 class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-3 flex items-center gap-2"><i class="ph-fill ph-instagram-logo text-pink-500 text-lg"></i> Story Retargeting</h5>
+                                    <p id="story-strategy" class="text-gray-400 text-sm">...</p>
+                                </div>
+                                <div class="bg-[#0a0a0a] rounded-xl p-5 border border-gray-800">
+                                    <h5 class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-3 flex items-center gap-2"><i class="ph-fill ph-target text-red-400 text-lg"></i> Hijack Strategy</h5>
+                                    <p id="engagement-actions" class="text-gray-400 text-sm">...</p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RIGHT COLUMN: Advanced OS Tools -->
+                <div class="space-y-6">
+                    
+                    <!-- Advanced WhatsApp Funnel -->
+                    <div class="glass-card rounded-2xl border border-gray-800 p-6 relative overflow-hidden group">
+                        <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity pointer-events-none">
+                            <i class="ph-fill ph-whatsapp-logo text-6xl text-green-500"></i>
+                        </div>
+                        <h4 class="text-lg font-display font-bold text-white mb-5 flex items-center gap-2 border-b border-gray-800 pb-4">
+                            WhatsApp Funnel Pro
+                        </h4>
+                        
+                        <div class="space-y-5">
+                            <div>
+                                <p class="text-[10px] text-gray-500 uppercase tracking-widest font-bold mb-2">High-Ticket Auto-Reply</p>
+                                <div class="bg-[#050505] p-4 rounded-lg border border-gray-800 text-sm text-gray-300 relative group cursor-pointer" onclick="copyText(this)">
+                                    "Hi! 👋 Thanks for reaching out to <span class="custom-clinic text-primary font-bold"></span>. If you're inquiring about Aligners/Implants, reply with 'SMILE' to receive our free pricing guide & case studies PDF immediately."
+                                    <div class="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center">
+                                        <span class="text-xs font-bold text-white uppercase tracking-wider"><i class="ph-bold ph-copy"></i> Click to Copy</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <p class="text-[10px] text-gray-500 uppercase tracking-widest font-bold mb-2">No-Show Recovery Script</p>
+                                <div class="bg-[#050505] p-4 rounded-lg border border-gray-800 text-sm text-gray-300">
+                                    "Hey [Name], we missed you today at <span class="custom-clinic font-medium"></span>! We know life gets busy. Would you like to reschedule for tomorrow evening, or later this week?"
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Competitor Hijacking (60-Day Exclusive) -->
+                    <div class="glass-card rounded-2xl border border-gray-800 p-6">
+                        <div class="inline-block px-2 py-0.5 bg-red-500/10 border border-red-500/20 rounded text-[9px] font-bold text-red-500 uppercase tracking-widest mb-3">60-Day Exclusive</div>
+                        <h4 class="text-lg font-display font-bold text-white mb-4 flex items-center gap-2">
+                            <i class="ph-fill ph-crosshair text-red-500"></i> Competitor Hijack
+                        </h4>
+                        <ul class="space-y-4 text-sm text-gray-400">
+                            <li class="flex gap-3">
+                                <div class="w-6 h-6 rounded bg-gray-900 border border-gray-700 flex items-center justify-center flex-shrink-0 text-white font-bold text-xs mt-0.5">1</div>
+                                <div>Follow top 5 rival clinics in <span class="custom-clinic text-white font-bold"></span>.</div>
+                            </li>
+                            <li class="flex gap-3">
+                                <div class="w-6 h-6 rounded bg-gray-900 border border-gray-700 flex items-center justify-center flex-shrink-0 text-white font-bold text-xs mt-0.5">2</div>
+                                <div>Turn ON post notifications for them.</div>
+                            </li>
+                            <li class="flex gap-3">
+                                <div class="w-6 h-6 rounded bg-gray-900 border border-gray-700 flex items-center justify-center flex-shrink-0 text-white font-bold text-xs mt-0.5">3</div>
+                                <div>When a patient asks "Price?" on their post, wait 1 hour. If unanswered, DM the patient a better offer from your clinic.</div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- B2B Local Network (60-Day Exclusive) -->
+                    <div class="bg-gradient-to-br from-[#0a0a0a] to-[#111] rounded-2xl border border-[#222] p-6 relative overflow-hidden">
+                        <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-accent/5 rounded-full blur-2xl"></div>
+                        <div class="inline-block px-2 py-0.5 bg-accent/10 border border-accent/20 rounded text-[9px] font-bold text-accent uppercase tracking-widest mb-3">60-Day Exclusive</div>
+                        <h4 class="text-lg font-display font-bold text-white mb-3 flex items-center gap-2 relative z-10">
+                            <i class="ph-fill ph-handshake text-accent"></i> B2B Local Network
+                        </h4>
+                        <p class="text-xs text-gray-400 leading-relaxed relative z-10 mb-4">
+                            Partner with non-competing businesses in <span class="custom-city text-white font-bold"></span> for cross-promotion.
+                        </p>
+                        <div class="space-y-2 relative z-10">
+                            <div class="bg-[#050505] border border-gray-800 rounded px-3 py-2 flex items-center justify-between">
+                                <span class="text-xs font-bold text-gray-300">Wedding Planners</span>
+                                <span class="text-[10px] text-primary bg-primary/10 px-2 py-0.5 rounded">Whitening</span>
+                            </div>
+                            <div class="bg-[#050505] border border-gray-800 rounded px-3 py-2 flex items-center justify-between">
+                                <span class="text-xs font-bold text-gray-300">Premium Gyms</span>
+                                <span class="text-[10px] text-accent bg-accent/10 px-2 py-0.5 rounded">Aligners</span>
+                            </div>
+                            <div class="bg-[#050505] border border-gray-800 rounded px-3 py-2 flex items-center justify-between">
+                                <span class="text-xs font-bold text-gray-300">Dermatologists</span>
+                                <span class="text-[10px] text-purple-400 bg-purple-500/10 px-2 py-0.5 rounded">Aesthetics</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="fixed bottom-5 right-5 transform translate-y-20 opacity-0 transition-all duration-300 bg-[#0a0a0a] border border-primary/30 shadow-[0_0_20px_rgba(0,242,254,0.15)] px-5 py-3 rounded-lg flex items-center gap-3 z-50">
+        <i class="ph-fill ph-check-circle text-primary text-xl"></i>
+        <span id="toast-msg" class="text-sm font-bold text-white">Action successful</span>
+    </div>
+
+    <!-- MAIN JAVASCRIPT -->
+    <script>
+        // --- 1. STATE & 60-DAY DATA GENERATION ---
+        
+        // Extended 60-Day Distribution: 20 Edu, 16 Trans, 10 Myth, 8 Auth, 6 Emo = 60 Days
+        const contentDistribution = [
+            ...Array(20).fill('Educational'),
+            ...Array(16).fill('Transformation'),
+            ...Array(10).fill('Myth-busting'),
+            ...Array(8).fill('Authority'),
+            ...Array(6).fill('Emotional')
+        ];
+
+        function shuffle(array) {
+            let currentIndex = array.length,  randomIndex;
+            while (currentIndex > 0) {
+                randomIndex = Math.floor(Math.random() * currentIndex);
+                currentIndex--;
+                [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+            }
+            return array;
+        }
+
+        let shuffledTypes = shuffle([...contentDistribution]);
+        // Force Day 1 to be Authority/Intro
+        const authIndex = shuffledTypes.indexOf('Authority');
+        if(authIndex !== -1) {
+            shuffledTypes.splice(authIndex, 1);
+            shuffledTypes.unshift('Authority');
+        }
+
+        // Expanded Templates for 60 Days
+        const templates = {
+            'Educational': [
+                {
+                    idea: "3 Signs You Need Clear Aligners",
+                    hook: "Think your teeth are perfectly straight? Check for these 3 hidden signs.",
+                    script: "Dentist here. Straight teeth aren't just about looks, it's about function.\n1. Food constantly gets stuck between the same two teeth.\n2. You get frequent headaches (jaw misalignment).\n3. One tooth is wearing down faster than the others.\nClear aligners fix the ROOT cause, invisibly.",
+                    caption: "Straight teeth = A healthy bite. 🦷\n\nMisaligned teeth are harder to clean, leading to early decay and gum disease. At {clinic}, we use 3D scanning technology to predict exactly how your smile will look before we even start.\n\nWant to see your future smile?\n👇 DM 'ALIGN' for a free 3D scan appointment.",
+                    story: "Poll: 'Have you ever had braces?' Yes/No. Next slide: 'Wish you had them but hate the metal? Meet invisible aligners.'",
+                    engagement: "Comment on 10 local {city} fashion/lifestyle influencers. People who care about aesthetics are prime aligner candidates."
+                },
+                {
+                    idea: "Top 3 Mistakes Indians Make While Brushing",
+                    hook: "STOP brushing your teeth like this! You're destroying your enamel.",
+                    script: "90% of my patients do this.\n1. Using a hard brush (it acts like sandpaper).\n2. Brushing right after drinking chai (acid softens enamel).\n3. Rinsing with water immediately after paste (spit, don't rinse!).\nWatch till the end to see the brush you SHOULD use.",
+                    caption: "Are you making these common brushing mistakes? 🪥\n\nMost people think harder = cleaner. False! Using a hard bristle brush destroys gums over time.\n\nAt {clinic}, preventive care is our priority.\n\n👇 Drop a 'BRUSH' in the comments and I'll DM you my top 3 recommended toothbrushes.",
+                    story: "Video of you squeezing toothpaste. 'Did you know you only need a pea-sized amount?'",
+                    engagement: "Engage with local {city} food bloggers. Sugar/Acid = Dental care needed."
+                },
+                {
+                    idea: "Why Flossing is Actually Mandatory",
+                    hook: "If you don't floss, you are leaving 40% of your tooth uncleaned. Yuck.",
+                    script: "Imagine washing only the front and back of your car, but never the sides. That's brushing without flossing.\nThe plaque between your teeth causes the worst cavities and terrible bad breath.\nDon't like thread floss? Get a water flosser. Just clean between them!",
+                    caption: "The truth about flossing. 🧵\n\nBrushing alone physically cannot reach the tight spaces between your teeth. That's where bacteria breed, causing hidden cavities that usually end up needing Root Canals.\n\nSave your teeth (and your money).\n💬 Need a checkup? DM 'CHECK' to book a slot at {clinic}.",
+                    story: "Show a water flosser in action vs string floss. 'Which team are you on?'",
+                    engagement: "Reply to 15 comments on a popular local meme page in {city} with a witty, dental-related joke."
+                }
+            ],
+            'Transformation': [
+                {
+                    idea: "Before vs After: Yellow to Bright White",
+                    hook: "Watch this patient's reaction to seeing her new smile for the first time!",
+                    script: "[Show Before picture]\nShe hid her smile for 5 years because of severe yellowing.\n[Show quick transition of the whitening process]\n[Show After video of her smiling in the mirror].\n45 minutes. No pain. Life-changing confidence.",
+                    caption: "A smile changes everything. ✨\n\nOur patient came to {clinic} feeling self-conscious. In just one 45-minute laser whitening session, we brightened her teeth by 4 shades!\n\nReady for your glow-up?\n💬 DM 'SMILE' for a free virtual shade assessment.",
+                    story: "Before/After slider sticker in stories. 'Would you want these results?' Yes / Tell me more.",
+                    engagement: "Find local wedding photographers in {city}. Engage with brides-to-be in the comments."
+                },
+                {
+                    idea: "Complete Smile Makeover (Veneers)",
+                    hook: "She hated her smile her entire life. Today, we changed that forever.",
+                    script: "This patient came to us with severe spacing and shape issues.\nBraces would take 2 years. She wanted it fixed this month.\nWe designed 8 custom porcelain veneers.\n[Show placing the final veneer].\nLook at this masterpiece. Perfect symmetry, perfect shade.",
+                    caption: "The power of Porcelain Veneers. 💎\n\nCustom-designed in our premium lab to fit her face shape perfectly. At {clinic}, we don't just fix teeth, we design confidence.\n\nInterested in a Smile Makeover?\n🔗 Click the link in bio to consult our experts in {city}.",
+                    story: "Show the ceramic lab process (b-roll). 'Where the magic is made.'",
+                    engagement: "Target local modeling agencies/portfolios in {city}. High intent for aesthetic dentistry."
+                },
+                {
+                    idea: "Fixing a Broken Front Tooth in 30 Mins",
+                    hook: "He thought his smile was ruined after a cricket injury. Watch this magic.",
+                    script: "He chipped his front tooth playing cricket. Wedding tomorrow.\nInstead of a crown, we used highly aesthetic composite bonding.\n[Show fast-forward of the filling process]\nLook at the blend! It's invisible.",
+                    caption: "Accidents happen. Ruined smiles shouldn't. 🏏\n\nUsing advanced composite bonding at {clinic}, we matched the exact shade and anatomy of his natural tooth. Done in 1 visit.\n\nChipped tooth bothering you?\n💬 DM 'FIX' and let's get it sorted.",
+                    story: "Q&A Box: 'What's holding you back from fixing your teeth? Cost, Fear, or Time?'",
+                    engagement: "Reply to every single DM within 10 minutes today. Speed = Conversions."
+                }
+            ],
+            'Myth-busting': [
+                {
+                    idea: "Does Teeth Cleaning Make Teeth Loose?",
+                    hook: "The biggest lie Indians believe about visiting the dentist.",
+                    script: "Myth: 'Doctor, getting my teeth cleaned will make them loose!'\nFact: Plaque and tartar act like cement holding weak teeth together, while eating your bone.\nWhen we remove that dirt, your teeth feel weird for a day, but the gums heal and get STRONGER.\nStop avoiding your cleaning!",
+                    caption: "Let's bust this massive myth today! 🛑\n\nScaling DOES NOT damage your enamel or loosen your teeth. The tartar buildup is literally dissolving your bone.\n\nAt {clinic}, we use ultrasonic scalers. It's safe and painless.\n\n💬 DM 'CLEAN' to claim a ₹99 consultation this week in {city}.",
+                    story: "True or False Quiz: 'Cleaning teeth removes enamel'. (Answer: False!).",
+                    engagement: "Search #{city}Moms or #{city}Fitness. Leave 10 thoughtful comments."
+                },
+                {
+                    idea: "Root Canals are Painful (False!)",
+                    hook: "Still scared of Root Canals in 2026? You need to watch this.",
+                    script: "People think Root Canals cause pain. Wrong. Root Canals RELIEVE pain.\nThe pain you feel is the infection. Once you are numb, a modern root canal feels exactly like getting a normal filling.\nDon't pull the tooth, save it!",
+                    caption: "Modern dentistry has changed. 🔬\n\nWith advanced anesthetics and rotary endodontics at {clinic}, a Root Canal is no scarier than a simple filling.\n\nDon't let fear cost you your natural tooth.\n💬 Experiencing tooth pain? DM 'RELIEF' for priority booking.",
+                    story: "Patient testimonial video specifically mentioning 'I didn't feel a thing during my RCT'.",
+                    engagement: "Hijack strategy: Find competitor posts about RCTs. See who is asking questions and answer them politely."
+                }
+            ],
+            'Authority': [
+                {
+                    idea: "Behind the Scenes: Elite Hygiene",
+                    hook: "Ever wonder how clean your dentist's tools actually are? Let's check.",
+                    script: "At {clinic}, your safety is our obsession.\nStep 1: Ultrasonic cleaning.\nStep 2: Pouches and sealing.\nStep 3: Class-B medical Autoclave sterilization.\nWe open a fresh, sealed pouch in front of EVERY single patient. Never settle for less.",
+                    caption: "Transparency is our policy. 🛡️\n\nBefore you let anyone work on your mouth, you need to know their sterilization protocols. At {clinic} in {city}, we follow strict international hygiene standards.\n\nYour health is not a compromise.\n🔗 Book a safe consultation via link in bio.",
+                    story: "Video tour of the sterilization room. Point out the machines.",
+                    engagement: "Tag local health businesses (gyms, dieticians in {city}) to build B2B local authority."
+                },
+                {
+                    idea: "Meet the Chief Doctor (Origin Story)",
+                    hook: "Why did I become a dentist in {city}? It's not what you think.",
+                    script: "When I was 12, I broke my front tooth. I didn't smile for a year because I was so embarrassed.\nMy dentist didn't just fix my tooth, he gave me my personality back.\nThat's why I started {clinic}. I want to give that exact same feeling to every patient who walks through my doors.",
+                    caption: "It's more than just teeth to us. 💙\n\nEvery smile we restore at {clinic} reminds me of why I chose this profession. We are in the business of restoring confidence.\n\nThank you, {city}, for trusting us with your smiles.\n💬 DM 'CONSULT' to meet our amazing team.",
+                    story: "Share a casual, behind-the-scenes photo of the team having lunch or coffee. Humanize the brand.",
+                    engagement: "Interact with local {city} news/community pages to show local pride."
+                }
+            ],
+            'Emotional': [
+                {
+                    idea: "Overcoming Extreme Dental Phobia",
+                    hook: "She hadn't seen a dentist in 15 years because she was terrified.",
+                    script: "Meet Priya. Her previous dentist traumatized her as a kid.\nShe came to us in tears.\nWe didn't touch a single tool on day one. We just talked.\nWe used numbing gel, played her favorite music, and went at her pace.\nLook at her smiling now.",
+                    caption: "Dental anxiety is real. We understand. 💙\n\nMany patients delay treatments because of bad past experiences. At {clinic}, we practice 'Empathy-First' dentistry.\n\nAfraid of the dentist?\n💬 DM us 'CHAT' and let's just talk. No pressure, no tools.",
+                    story: "Share a written testimonial screenshot highlighting the words 'painless' and 'comfortable'.",
+                    engagement: "Post a supportive comment on 5 local mental health/wellness pages in {city}."
+                }
+            ]
+        };
+
+        // Generate the full 60-day array
+        let daysData = [];
+        shuffledTypes.forEach((type, index) => {
+            const templateList = templates[type] || templates['Educational']; 
+            const tpl = templateList[Math.floor(Math.random() * templateList.length)];
+            
+            const times = ["9:00 AM", "12:30 PM", "5:00 PM", "6:30 PM", "8:00 PM"];
+            const time = times[Math.floor(Math.random() * times.length)];
+
+            daysData.push({
+                day: index + 1,
+                type: type,
+                idea: tpl.idea,
+                hook: tpl.hook,
+                script: tpl.script,
+                caption: tpl.caption,
+                cta: "DM 'SMILE' for consultation",
+                time: time,
+                hashtags: `#DentalCare #SmileMakeover #DentistLife #HealthySmile`,
+                story: tpl.story,
+                engagement: tpl.engagement,
+                completed: false
+            });
+        });
+
+        // App State
+        let currentDayIndex = 0;
+        let clinicName = "Elite Dental";
+        let city = "Bangalore";
+
+        // --- 2. DOM ELEMENTS ---
+        const els = {
+            daysList: document.getElementById('days-list'),
+            progressBar: document.getElementById('progress-bar'),
+            progressText: document.getElementById('progress-text'),
+            completedCount: document.getElementById('completed-count'),
+            
+            inputClinic: document.getElementById('input-clinic'),
+            inputCity: document.getElementById('input-city'),
+            
+            displayDayTitle: document.getElementById('display-day-title'),
+            typeBadge: document.getElementById('content-type-badge'),
+            reelIdea: document.getElementById('reel-idea'),
+            postingTime: document.getElementById('posting-time'),
+            hookText: document.getElementById('hook-text'),
+            ctaText: document.getElementById('cta-text'),
+            scriptText: document.getElementById('script-text'),
+            captionText: document.getElementById('caption-text'),
+            hashtagsText: document.getElementById('hashtags-text'),
+            storyStrategy: document.getElementById('story-strategy'),
+            engagementActions: document.getElementById('engagement-actions'),
+            
+            btnComplete: document.getElementById('btn-complete'),
+            contentEngine: document.getElementById('content-engine')
+        };
+
+        // --- 3. CORE FUNCTIONS ---
+
+        function init() {
+            renderSidebar();
+            selectDay(0);
+            updateGlobalPlaceholders();
+            
+            els.inputClinic.addEventListener('input', (e) => {
+                clinicName = e.target.value || "Elite Dental";
+                updateUI();
+                updateGlobalPlaceholders();
+            });
+            els.inputCity.addEventListener('input', (e) => {
+                city = e.target.value || "Bangalore";
+                updateUI();
+                updateGlobalPlaceholders();
+            });
+        }
+
+        function renderSidebar() {
+            els.daysList.innerHTML = '';
+            let completedCount = 0;
+
+            daysData.forEach((data, index) => {
+                if(data.completed) completedCount++;
+
+                const btn = document.createElement('button');
+                btn.className = `w-full text-left px-4 py-3 rounded-lg text-sm font-bold transition-all duration-200 flex items-center justify-between group border border-transparent ${index === currentDayIndex ? 'tab-active' : 'text-gray-500 hover:bg-gray-900 hover:text-white'}`;
+                btn.onclick = () => selectDay(index);
+                
+                let iconClass = 'ph-circle text-gray-600';
+                if(data.completed) iconClass = 'ph-fill ph-check-circle text-primary shadow-[0_0_10px_#00f2fe] rounded-full';
+                else if (index === currentDayIndex) iconClass = 'ph-fill ph-play-circle text-primary';
+
+                btn.innerHTML = `
+                    <span class="flex items-center gap-3">
+                        <i class="${iconClass} text-xl group-hover:scale-110 transition-transform"></i>
+                        Day ${data.day}
+                    </span>
+                    <span class="text-[9px] uppercase tracking-widest opacity-50 font-bold">${data.type.substring(0,3)}</span>
+                `;
+                els.daysList.appendChild(btn);
+            });
+
+            // Update Progress (Out of 60)
+            const progress = Math.round((completedCount / 60) * 100);
+            els.progressBar.style.width = `${progress}%`;
+            els.progressText.innerText = `${progress}%`;
+            els.completedCount.innerText = completedCount;
+        }
+
+        function selectDay(index) {
+            currentDayIndex = index;
+            renderSidebar(); 
+            updateUI(); 
+            
+            // Trigger animation
+            els.contentEngine.classList.remove('fade-in');
+            void els.contentEngine.offsetWidth; 
+            els.contentEngine.classList.add('fade-in');
+            
+            if(window.innerWidth < 1024) {
+                document.getElementById('main-scroll-area').scrollTop = 0;
+            }
+        }
+
+        function formatText(text) {
+            if(!text) return "";
+            return text
+                .replace(/{clinic}/g, clinicName)
+                .replace(/{city}/g, city);
+        }
+
+        function updateUI() {
+            const data = daysData[currentDayIndex];
+            
+            els.displayDayTitle.innerText = `Day ${data.day} Execution Plan`;
+            
+            // Badge styling using OWNIT theme colors
+            els.typeBadge.innerText = data.type;
+            let badgeColors = "bg-primary/10 text-primary border-primary/20";
+            if(data.type === 'Transformation') badgeColors = "bg-green-500/10 text-green-400 border-green-500/20";
+            if(data.type === 'Myth-busting') badgeColors = "bg-red-500/10 text-red-500 border-red-500/20";
+            if(data.type === 'Authority') badgeColors = "bg-purple-500/10 text-purple-400 border-purple-500/20";
+            if(data.type === 'Emotional') badgeColors = "bg-pink-500/10 text-pink-400 border-pink-500/20";
+            els.typeBadge.className = `px-3 py-1 text-[10px] font-bold uppercase tracking-widest rounded-full border inline-block mb-3 ${badgeColors}`;
+
+            els.reelIdea.innerText = formatText(data.idea);
+            els.postingTime.innerHTML = `<i class="ph-fill ph-clock text-primary"></i> ${data.time}`;
+            els.hookText.innerText = `"${formatText(data.hook)}"`;
+            els.ctaText.innerText = formatText(data.cta);
+            els.scriptText.innerText = formatText(data.script);
+            els.captionText.innerText = formatText(data.caption);
+            
+            const dynamicTags = `#${city.replace(/\s+/g, '')}Dentist #${city.replace(/\s+/g, '')}Clinic #${clinicName.replace(/\s+/g, '')}`;
+            els.hashtagsText.innerText = `${data.hashtags} ${dynamicTags}`;
+            
+            els.storyStrategy.innerText = formatText(data.story);
+            els.engagementActions.innerText = formatText(data.engagement);
+
+            // Update Complete Button
+            if(data.completed) {
+                els.btnComplete.innerHTML = `<i class="ph-bold ph-check-circle text-green-500 text-lg"></i> Completed`;
+                els.btnComplete.classList.replace('bg-gray-900', 'bg-green-500/10');
+                els.btnComplete.classList.replace('border-gray-700', 'border-green-500/30');
+                els.btnComplete.classList.add('text-green-500');
+                els.btnComplete.classList.remove('text-gray-300');
+            } else {
+                els.btnComplete.innerHTML = `<i class="ph-bold ph-check-circle text-lg group-hover:text-green-500 transition-colors"></i> Mark Complete`;
+                els.btnComplete.classList.replace('bg-green-500/10', 'bg-gray-900');
+                els.btnComplete.classList.replace('border-green-500/30', 'border-gray-700');
+                els.btnComplete.classList.remove('text-green-500');
+                els.btnComplete.classList.add('text-gray-300');
+            }
+        }
+
+        function updateGlobalPlaceholders() {
+            document.querySelectorAll('.custom-clinic').forEach(el => el.innerText = clinicName);
+            document.querySelectorAll('.custom-city').forEach(el => el.innerText = city);
+            document.getElementById('print-clinic').innerText = clinicName;
+            document.getElementById('print-city').innerText = city;
+        }
+
+        function toggleDayCompletion() {
+            daysData[currentDayIndex].completed = !daysData[currentDayIndex].completed;
+            renderSidebar();
+            updateUI();
+            showToast(daysData[currentDayIndex].completed ? "Day secured! Great work. ⚡" : "Day marked as pending.");
+            
+            if(daysData[currentDayIndex].completed && currentDayIndex < 59) {
+                setTimeout(() => selectDay(currentDayIndex + 1), 600);
+            }
+        }
+
+        // --- UTILS ---
+        
+        function copyToClipboard(elementId) {
+            const text = document.getElementById(elementId).innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                showToast("Caption copied to clipboard!");
+            });
+        }
+
+        function copyText(el) {
+            // Grab the text node specifically to avoid copying the "Click to Copy" span text
+            const text = el.childNodes[0].nodeValue;
+            navigator.clipboard.writeText(text.trim()).then(() => {
+                showToast("Script copied!");
+            });
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-msg').innerText = msg;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+
+        // --- EXPORT PDF ---
+        function exportToPDF() {
+            showToast("Generating Blueprint... Please wait.");
+            const element = document.getElementById('export-content');
+            
+            // Clean styling for PDF formatting
+            element.classList.add('bg-white', 'text-black', 'p-8');
+            const glassCards = element.querySelectorAll('.glass-card, .bg-\\[\\#080808\\], .bg-\\[\\#0a0a0a\\], .bg-\\[\\#0f0f0f\\], .bg-\\[\\#050505\\]');
+            glassCards.forEach(card => card.classList.add('!bg-gray-50', '!text-black', '!border-gray-200'));
+            
+            const textElements = element.querySelectorAll('.text-white, .text-gray-300, .text-gray-400, .text-gray-500');
+            textElements.forEach(txt => txt.classList.add('!text-gray-800'));
+
+            document.querySelectorAll('.print-only').forEach(el => el.style.display = 'block');
+
+            const opt = {
+                margin:       10,
+                filename:     `OWNIT_60_Day_Plan_${clinicName.replace(/\s+/g, '_')}.pdf`,
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2, useCORS: true, ignoreElements: (el) => el.hasAttribute('data-html2canvas-ignore') },
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            html2pdf().set(opt).from(element).save().then(() => {
+                // Revert styling
+                element.classList.remove('bg-white', 'text-black', 'p-8');
+                glassCards.forEach(card => card.classList.remove('!bg-gray-50', '!text-black', '!border-gray-200'));
+                textElements.forEach(txt => txt.classList.remove('!text-gray-800'));
+                document.querySelectorAll('.print-only').forEach(el => el.style.display = 'none');
+                showToast("Blueprint Downloaded Successfully! 🚀");
+            });
+        }
+
+        // Run
+        init();
+
+    </script>
+</body>
+</html>

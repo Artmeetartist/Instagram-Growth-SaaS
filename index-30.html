@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OWNIT | 30-Day Kickstart OS Dashboard</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        darkBg: '#050505',
+                        panelBg: '#0a0a0a',
+                        primary: '#00f2fe', // Electric Cyan
+                        primaryHover: '#00c3cc',
+                        accent: '#4facfe', // Vibrant Blue
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Clash Display', 'sans-serif'],
+                    },
+                    animation: {
+                        'blob': 'blob 7s infinite',
+                    },
+                    keyframes: {
+                        blob: {
+                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://api.fontshare.com/v2/css?f[]=clash-display@600,700,800&display=swap" rel="stylesheet">
+    
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <!-- html2pdf.js for Export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #050505;
+            color: #f3f4f6;
+            overflow: hidden; /* App-like feel */
+            cursor: auto; /* Restored normal native cursor */
+        }
+
+        h1, h2, h3, h4, .font-display {
+            font-family: 'Clash Display', sans-serif;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: rgba(10, 10, 10, 0.5); }
+        ::-webkit-scrollbar-thumb { background: rgba(0, 242, 254, 0.3); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(0, 242, 254, 0.6); }
+
+        /* Noise Overlay for premium texture */
+        .noise-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            pointer-events: none; z-index: 9999; opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        /* Glassmorphism utilities */
+        .glass-panel {
+            background: rgba(10, 10, 10, 0.6);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .glass-card {
+            background: linear-gradient(145deg, rgba(20, 20, 20, 0.5) 0%, rgba(10, 10, 10, 0.8) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+            transition: border-color 0.3s ease, transform 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .glass-card::before {
+            content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(800px circle at var(--mouse-x, 0) var(--mouse-y, 0), rgba(0, 242, 254, 0.06), transparent 40%);
+            opacity: 0; transition: opacity 0.3s; pointer-events: none;
+        }
+        .glass-card:hover::before { opacity: 1; }
+        .glass-card:hover { border-color: rgba(0, 242, 254, 0.2); transform: translateY(-2px); }
+
+        /* Perspective Tilt Wrapper */
+        .tilt-wrapper { perspective: 1000px; transform-style: preserve-3d; }
+        .tilt-element { transition: transform 0.1s ease-out; will-change: transform; }
+
+        .tab-active {
+            background: linear-gradient(90deg, rgba(0, 242, 254, 0.1) 0%, transparent 100%);
+            border-left: 3px solid #00f2fe;
+            color: #fff;
+        }
+
+        /* Transitions */
+        .fade-in { animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .print-only { display: none; }
+    </style>
+</head>
+<body class="h-screen flex overflow-hidden selection:bg-primary selection:text-black">
+    
+    <body class="h-screen flex overflow-hidden selection:bg-primary selection:text-black">
+    
+    <!-- Noise (Ignored in PDF) -->
+    <div class="noise-overlay" data-html2canvas-ignore></div>
+
+    <!-- Animated Ambient Backgrounds -->
+    <div class="fixed top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none opacity-30" data-html2canvas-ignore>
+        <div class="absolute top-[-10%] left-[-10%] w-[40vw] h-[40vw] rounded-full bg-primary/20 blur-[120px] mix-blend-screen animate-blob"></div>
+        <div class="absolute bottom-[-20%] right-[-10%] w-[50vw] h-[50vw] rounded-full bg-accent/10 blur-[150px] mix-blend-screen animate-blob" style="animation-delay: 2s;"></div>
+    </div>
+
+    <!-- LEFT SIDEBAR: 30 Days System -->
+    <aside class="w-72 glass-panel h-full flex flex-col border-r border-gray-800 z-10 flex-shrink-0 relative">
+        <!-- Logo Area -->
+        <div class="p-6 border-b border-gray-800 flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-white flex items-center justify-center shadow-[0_0_15px_rgba(0,242,254,0.3)] interactive-el">
+                <i class="ph-bold ph-lightning text-black text-xl"></i>
+            </div>
+            <div>
+                <h1 class="font-display font-bold text-xl tracking-wide text-white leading-tight">OWNIT</h1>
+                <p class="text-[10px] uppercase tracking-widest text-primary font-bold">30-Day Kickstart</p>
+            </div>
+        </div>
+
+        <!-- Progress Tracker -->
+        <div class="p-5 border-b border-gray-800">
+            <div class="flex justify-between text-xs mb-2 text-gray-400 font-medium">
+                <span>System Progress</span>
+                <span id="progress-text" class="text-primary font-bold">0%</span>
+            </div>
+            <div class="w-full bg-gray-900 rounded-full h-1.5 overflow-hidden">
+                <div id="progress-bar" class="bg-gradient-to-r from-primary to-accent h-1.5 rounded-full transition-all duration-500 w-0 shadow-[0_0_10px_#00f2fe]"></div>
+            </div>
+            <p class="text-[10px] text-gray-500 mt-2 text-center"><span id="completed-count">0</span> of 30 Days Completed</p>
+        </div>
+
+        <!-- Days List -->
+        <div class="flex-1 overflow-y-auto py-2 px-3 space-y-1" id="days-list">
+            <!-- JS will inject 30 days here -->
+        </div>
+        
+        <!-- Bottom Settings/Export -->
+        <div class="p-4 border-t border-gray-800 bg-[#050505]">
+            <button onclick="exportToPDF()" class="interactive-el w-full py-3 px-4 bg-gray-900 hover:bg-white hover:text-black text-sm font-bold rounded-lg text-white transition-all duration-300 flex items-center justify-center gap-2 border border-gray-700 hover:border-white group">
+                <i class="ph-bold ph-download-simple text-lg group-hover:text-black"></i> Export 30-Day Plan
+            </button>
+        </div>
+    </aside>
+
+    <!-- MAIN DASHBOARD -->
+    <main class="flex-1 h-full flex flex-col relative overflow-y-auto" id="main-scroll-area">
+        
+        <!-- Top Navbar & AI Configuration -->
+        <header class="sticky top-0 z-20 glass-panel border-b border-gray-800 px-8 py-5 flex justify-between items-center backdrop-blur-xl">
+            <div>
+                <h2 class="text-2xl font-display font-bold text-white tracking-tight">The Kickstart Dashboard</h2>
+                <p class="text-sm text-gray-400 mt-1">Scale to 100K Followers & Establish Local Authority</p>
+            </div>
+            
+            <!-- AI Integration Simulation (Dynamic Customization) -->
+            <div class="flex gap-4 items-center bg-gray-900/80 p-2.5 rounded-xl border border-gray-800 shadow-inner">
+                <div class="flex items-center gap-2 px-3 border-r border-gray-800">
+                    <i class="ph-fill ph-magic-wand text-primary animate-pulse"></i>
+                    <span class="text-xs font-bold text-gray-300 uppercase tracking-wider">AI Target</span>
+                </div>
+                <input type="text" id="input-clinic" placeholder="Enter Clinic Name" value="Elite Dental" 
+                    class="interactive-el bg-transparent border-none text-sm text-white placeholder-gray-600 focus:ring-0 focus:outline-none w-36 font-medium">
+                <div class="w-px h-5 bg-gray-800"></div>
+                <input type="text" id="input-city" placeholder="Enter City" value="Mumbai" 
+                    class="interactive-el bg-transparent border-none text-sm text-white placeholder-gray-600 focus:ring-0 focus:outline-none w-32 font-medium">
+            </div>
+        </header>
+
+        <div class="p-8 max-w-7xl mx-auto w-full space-y-8 pb-20" id="export-content">
+            
+            <!-- Export Header (Hidden in UI, visible in PDF) -->
+            <div class="print-only text-center mb-8 border-b border-gray-200 pb-4">
+                <h1 class="text-3xl font-bold text-black font-display" id="print-title">OWNIT 30-Day Growth Plan</h1>
+                <p class="text-gray-600 mt-2">Generated for <span id="print-clinic" class="font-bold"></span>, <span id="print-city"></span></p>
+            </div>
+
+            <!-- Stats Row with 3D Tilt Physics -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-5" id="stats-grid" data-html2canvas-ignore>
+                <div class="tilt-wrapper">
+                    <div class="tilt-element glass-card p-5 rounded-2xl flex items-start justify-between h-full cursor-pointer interactive-el">
+                        <div>
+                            <p class="text-gray-500 text-[10px] font-bold uppercase tracking-widest mb-1">Followers Target</p>
+                            <h3 class="text-3xl font-display font-bold text-white">100,000</h3>
+                            <p class="text-primary text-xs mt-2 flex items-center gap-1 font-medium"><i class="ph-bold ph-trend-up"></i> In 30 Days</p>
+                        </div>
+                        <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+                            <i class="ph-fill ph-users text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="tilt-wrapper">
+                    <div class="tilt-element glass-card p-5 rounded-2xl flex items-start justify-between h-full cursor-pointer interactive-el">
+                        <div>
+                            <p class="text-gray-500 text-[10px] font-bold uppercase tracking-widest mb-1">Leads Goal</p>
+                            <h3 class="text-3xl font-display font-bold text-white">500+</h3>
+                            <p class="text-accent text-xs mt-2 flex items-center gap-1 font-medium"><i class="ph-bold ph-target"></i> High Intent</p>
+                        </div>
+                        <div class="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center text-accent">
+                            <i class="ph-fill ph-magnet text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="tilt-wrapper">
+                    <div class="tilt-element glass-card p-5 rounded-2xl flex items-start justify-between h-full cursor-pointer interactive-el relative overflow-hidden">
+                        <div class="absolute -right-4 -bottom-4 w-24 h-24 bg-green-500/10 rounded-full blur-xl"></div>
+                        <div class="relative z-10">
+                            <p class="text-gray-500 text-[10px] font-bold uppercase tracking-widest mb-1">Daily Bookings</p>
+                            <h3 class="text-3xl font-display font-bold text-white">5-10</h3>
+                            <p class="text-green-400 text-xs mt-2 flex items-center gap-1 font-medium"><i class="ph-bold ph-calendar-check"></i> Consultations</p>
+                        </div>
+                        <div class="w-10 h-10 rounded-full bg-green-500/10 flex items-center justify-center text-green-400 relative z-10">
+                            <i class="ph-fill ph-calendar-plus text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="tilt-wrapper">
+                    <div class="tilt-element glass-card p-5 rounded-2xl flex items-start justify-between h-full cursor-pointer interactive-el">
+                        <div>
+                            <p class="text-gray-500 text-[10px] font-bold uppercase tracking-widest mb-1">Avg Engagement</p>
+                            <h3 class="text-3xl font-display font-bold text-white">12.5%</h3>
+                            <p class="text-yellow-400 text-xs mt-2 flex items-center gap-1 font-medium"><i class="ph-bold ph-fire"></i> Viral Threshold</p>
+                        </div>
+                        <div class="w-10 h-10 rounded-full bg-yellow-500/10 flex items-center justify-center text-yellow-400">
+                            <i class="ph-fill ph-heart text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MAIN CONTENT AREA: TWO COLUMNS -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                
+                <!-- LEFT COLUMN: The Daily Content Engine -->
+                <div class="lg:col-span-2 space-y-6">
+                    
+                    <div class="flex justify-between items-center" data-html2canvas-ignore>
+                        <h3 class="text-2xl font-display font-bold text-white flex items-center gap-3">
+                            <span class="w-2 h-8 bg-primary rounded-full shadow-[0_0_10px_#00f2fe]"></span>
+                            <span id="display-day-title">Day 1 Execution Plan</span>
+                        </h3>
+                        <button onclick="toggleDayCompletion()" id="btn-complete" class="interactive-el px-5 py-2.5 bg-gray-900 hover:bg-white hover:text-black text-gray-300 rounded-lg text-sm font-bold transition-all border border-gray-700 flex items-center gap-2 group">
+                            <i class="ph-bold ph-check-circle text-lg group-hover:text-green-500 transition-colors"></i> Mark Complete
+                        </button>
+                    </div>
+
+                    <!-- Day Content Card -->
+                    <div class="glass-card rounded-2xl border border-gray-800 overflow-hidden fade-in" id="content-engine">
+                        <!-- Header Banner -->
+                        <div class="bg-gradient-to-r from-gray-900 to-[#050505] p-6 border-b border-gray-800 flex justify-between items-center relative overflow-hidden">
+                            <div class="absolute right-0 top-0 w-64 h-full bg-primary/5 blur-[50px] pointer-events-none"></div>
+                            <div class="relative z-10">
+                                <div class="flex items-center gap-2 mb-3">
+                                    <span id="content-type-badge" class="px-3 py-1 bg-primary/10 text-primary text-[10px] font-bold uppercase tracking-widest rounded-full border border-primary/20 inline-block">Educational</span>
+                                    <span class="text-xs text-gray-500 font-mono">Theme: <span id="content-theme" class="text-gray-300 font-medium">Foundation</span></span>
+                                </div>
+                                <h4 id="reel-idea" class="text-xl font-display font-bold text-white leading-tight">Loading Concept...</h4>
+                            </div>
+                            <div class="text-right relative z-10">
+                                <p class="text-[10px] text-gray-500 uppercase tracking-widest font-bold mb-1">Post Time</p>
+                                <p id="posting-time" class="text-white font-bold text-lg flex items-center justify-end gap-1.5"><i class="ph-fill ph-clock text-primary"></i> 6:30 PM</p>
+                            </div>
+                        </div>
+
+                        <div class="p-6 space-y-6 bg-[#080808]">
+                            <!-- Hook & Script Grid -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <!-- Hook -->
+                                <div class="bg-[#0a0a0a] rounded-xl p-5 border border-gray-800 relative group cursor-pointer interactive-el" onclick="copyText(this)">
+                                    <div class="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity rounded-xl"></div>
+                                    <h5 class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-3 flex items-center gap-2"><i class="ph-fill ph-fishing-rod text-primary text-lg"></i> 3-Second Visual Hook</h5>
+                                    <p id="hook-text" class="text-white text-lg font-medium leading-snug">"..."</p>
+                                </div>
+                                <!-- CTA -->
+                                <div class="bg-[#0a0a0a] rounded-xl p-5 border border-gray-800 relative group cursor-pointer interactive-el" onclick="copyText(this)">
+                                    <div class="absolute inset-0 bg-accent/5 opacity-0 group-hover:opacity-100 transition-opacity rounded-xl"></div>
+                                    <h5 class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-3 flex items-center gap-2"><i class="ph-fill ph-cursor-click text-accent text-lg"></i> Automation CTA</h5>
+                                    <p id="cta-text" class="text-white text-md font-medium leading-snug">...</p>
+                                </div>
+                            </div>
+
+                            <!-- Script -->
+                            <div class="relative group cursor-pointer interactive-el" onclick="copyText(this)">
+                                <h5 class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-3 flex items-center gap-2"><i class="ph-fill ph-video-camera text-primary text-lg"></i> Fast-Paced Script (15-20s)</h5>
+                                <div class="bg-[#0f0f0f] group-hover:bg-[#111] transition-colors rounded-xl p-6 border border-gray-800 border-l-4 border-l-primary relative">
+                                    <i class="ph-fill ph-quotes text-5xl text-gray-800/50 absolute top-4 right-4 pointer-events-none"></i>
+                                    <p id="script-text" class="text-gray-300 text-sm leading-relaxed relative z-10 whitespace-pre-line font-medium">...</p>
+                                </div>
+                            </div>
+
+                            <!-- Caption & Hashtags -->
+                            <div class="bg-[#0a0a0a] rounded-xl p-6 border border-gray-800">
+                                <div class="flex justify-between items-center mb-4">
+                                    <h5 class="text-[10px] font-bold text-gray-500 uppercase tracking-widest flex items-center gap-2"><i class="ph-fill ph-text-align-left text-gray-400 text-lg"></i> SEO-Optimized Caption</h5>
+                                    <button class="interactive-el text-xs text-primary hover:text-white font-bold uppercase tracking-wider transition-colors flex items-center gap-1" onclick="copyToClipboard('caption-text')" data-html2canvas-ignore><i class="ph-bold ph-copy"></i> Copy</button>
+                                </div>
+                                <p id="caption-text" class="text-gray-400 text-sm leading-relaxed mb-5 whitespace-pre-line">...</p>
+                                
+                                <div class="pt-5 border-t border-gray-800/50">
+                                    <h5 class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2 flex items-center gap-2"><i class="ph-fill ph-hash text-accent text-lg"></i> Geo-Targeted Hashtags</h5>
+                                    <p id="hashtags-text" class="text-primary text-sm font-medium">...</p>
+                                </div>
+                            </div>
+
+                            <!-- Story & Engagement -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="bg-[#0a0a0a] rounded-xl p-5 border border-gray-800">
+                                    <h5 class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-3 flex items-center gap-2"><i class="ph-fill ph-instagram-logo text-pink-500 text-lg"></i> Story Retargeting</h5>
+                                    <p id="story-strategy" class="text-gray-400 text-sm">...</p>
+                                </div>
+                                <div class="bg-[#0a0a0a] rounded-xl p-5 border border-gray-800">
+                                    <h5 class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-3 flex items-center gap-2"><i class="ph-fill ph-chats-circle text-blue-400 text-lg"></i> Engagement Actions</h5>
+                                    <p id="engagement-actions" class="text-gray-400 text-sm">...</p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RIGHT COLUMN: Advanced OS Tools -->
+                <div class="space-y-6">
+                    
+                    <!-- Lead Generation Engine -->
+                    <div class="glass-card rounded-2xl border border-gray-800 p-6 relative overflow-hidden group">
+                        <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity pointer-events-none">
+                            <i class="ph-fill ph-funnel text-6xl text-accent"></i>
+                        </div>
+                        <h4 class="text-lg font-display font-bold text-white mb-5 flex items-center gap-2 border-b border-gray-800 pb-4">
+                            DM Lead Engine
+                        </h4>
+                        
+                        <div class="space-y-5">
+                            <div>
+                                <p class="text-[10px] text-gray-500 uppercase tracking-widest font-bold mb-2">Automation Script</p>
+                                <div class="bg-[#050505] p-4 rounded-lg border border-gray-800 text-sm text-gray-300 relative group cursor-pointer interactive-el" onclick="copyText(this)">
+                                    "Hi [Name]! 👋 Saw you requested info on our smile makeover. Could you send a quick picture of your teeth? Or we can schedule a free 10-min consultation at <span class="custom-clinic text-primary font-bold"></span>. What works for you?"
+                                    <div class="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center">
+                                        <span class="text-xs font-bold text-white uppercase tracking-wider pointer-events-none"><i class="ph-bold ph-copy"></i> Click to Copy</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <p class="text-[10px] text-gray-500 uppercase tracking-widest font-bold mb-2">WhatsApp API Link</p>
+                                <div class="bg-green-900/10 p-4 rounded-lg border border-green-500/20 text-sm text-gray-300 flex items-start gap-3">
+                                    <i class="ph-fill ph-whatsapp-logo text-green-500 text-xl mt-0.5"></i>
+                                    <p>Bio link format: <br><code class="text-green-400 font-mono text-xs mt-1 block">wa.me/91XXXXXXXXXX?text=Hi+<span class="custom-clinic-nospace"></span>+I+want+to+book</code></p>
+                                </div>
+                            </div>
+
+                            <div>
+                                <p class="text-[10px] text-gray-500 uppercase tracking-widest font-bold mb-2">High-Converting Offers</p>
+                                <div class="bg-primary/5 p-4 rounded-lg border border-primary/20 text-sm text-gray-300">
+                                    <ul class="list-disc pl-4 space-y-2 marker:text-primary">
+                                        <li>Free Scan (Itero/3D)</li>
+                                        <li>₹99 First Consultation</li>
+                                        <li>Complimentary Scaling with Whitening</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Virality Booster -->
+                    <div class="glass-card rounded-2xl border border-gray-800 p-6">
+                        <h4 class="text-lg font-display font-bold text-white mb-4 flex items-center gap-2 border-b border-gray-800 pb-4">
+                            <i class="ph-fill ph-rocket-launch text-orange-400 text-xl"></i> Virality Booster
+                        </h4>
+                        <ul class="space-y-4 text-sm text-gray-400">
+                            <li class="flex items-start gap-3">
+                                <div class="w-6 h-6 rounded bg-gray-900 border border-gray-700 flex items-center justify-center flex-shrink-0 text-white"><i class="ph-bold ph-music-notes text-xs"></i></div>
+                                <div>
+                                    <strong class="text-white block mb-1">Trending Audio</strong>
+                                    Always pick audio with an "Upward Arrow" trending icon under 10k uses.
+                                </div>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <div class="w-6 h-6 rounded bg-gray-900 border border-gray-700 flex items-center justify-center flex-shrink-0 text-white"><i class="ph-bold ph-video text-xs"></i></div>
+                                <div>
+                                    <strong class="text-white block mb-1">Format Ideas</strong>
+                                    B-roll of clinic + Text on screen (7-sec loop). ASMR tool cleaning works well.
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- CEO Insights Panel -->
+                    <div class="bg-gradient-to-br from-[#0a0a0a] to-[#111] rounded-2xl border border-[#222] p-6 relative overflow-hidden">
+                        <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-purple-500/10 rounded-full blur-2xl"></div>
+                        <i class="ph-fill ph-lightbulb text-6xl text-purple-500/10 absolute -bottom-2 -right-2"></i>
+                        <h4 class="text-lg font-display font-bold text-white mb-3 flex items-center gap-2 relative z-10">
+                            <i class="ph-fill ph-brain text-purple-400"></i> CEO Insight
+                        </h4>
+                        <p class="text-xs text-gray-400 leading-relaxed relative z-10">
+                            The algorithm favors <strong>Watch Time</strong> and <strong>Shares</strong>. By blending educational myths (saves) with local transformation proof (shares), we build an automated trust funnel. The CTA pushes them to DMs, shifting them from "audience" to "owned leads."
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="fixed bottom-5 right-5 transform translate-y-20 opacity-0 transition-all duration-300 bg-[#0a0a0a] border border-primary/30 shadow-[0_0_20px_rgba(0,242,254,0.15)] px-5 py-3 rounded-lg flex items-center gap-3 z-50">
+        <i class="ph-fill ph-check-circle text-primary text-xl"></i>
+        <span id="toast-msg" class="text-sm font-bold text-white">Action successful</span>
+    </div>
+
+    <!-- MAIN JAVASCRIPT -->
+    <script>
+        // --- 1. STATE & DATA GENERATION ---
+        
+        // 30 Unique High-Converting Concepts focused on Reach & Bookings
+        const coreConcepts = [
+            // Education (10)
+            { type: 'Educational', idea: "Top 3 Brushing Mistakes", hook: "STOP brushing like this! You're destroying your enamel." },
+            { type: 'Educational', idea: "Why Gums Bleed", hook: "Spitting blood while brushing is NOT normal. Here is why." },
+            { type: 'Educational', idea: "The Flossing Truth", hook: "If you don't floss, 40% of your tooth is literally rotting." },
+            { type: 'Educational', idea: "Aligners vs Braces", hook: "Thinking of braces? Here's why invisible aligners are faster." },
+            { type: 'Educational', idea: "Foods that Stain Teeth", hook: "Your morning chai is quietly turning your teeth yellow." },
+            { type: 'Educational', idea: "What is a Cavity?", hook: "A cavity isn't just a hole, it's an active bacterial infection." },
+            { type: 'Educational', idea: "Wisdom Teeth Signs", hook: "Having mystery jaw pain? It might be your wisdom tooth." },
+            { type: 'Educational', idea: "Electric vs Manual Brush", hook: "Are electric toothbrushes actually worth the money? Dentist reveals." },
+            { type: 'Educational', idea: "Mouthwash Mistakes", hook: "Stop using mouthwash right after brushing! You're washing away the fluoride." },
+            { type: 'Educational', idea: "How Sugars Ruin Teeth", hook: "Sugar doesn't cause cavities. The bacteria eating the sugar does." },
+            
+            // Transformation (8)
+            { type: 'Transformation', idea: "Yellow to Bright White", hook: "Watch her reaction to seeing her new bright smile for the first time." },
+            { type: 'Transformation', idea: "Broken Front Tooth Fix", hook: "He thought his smile was ruined after a sports injury. We fixed it in 30 mins." },
+            { type: 'Transformation', idea: "Full Mouth Veneers", hook: "From hiding her smile to Hollywood-ready in just 2 painless visits." },
+            { type: 'Transformation', idea: "Aligner Time-lapse", hook: "Watch 6 months of severe crowding get perfectly straight in 10 seconds." },
+            { type: 'Transformation', idea: "Single Implant Success", hook: "He couldn't eat an apple for 5 years. Watch him take his first bite today." },
+            { type: 'Transformation', idea: "Gummy Smile Correction", hook: "Hate showing too much gum when you smile? Watch this instant laser fix." },
+            { type: 'Transformation', idea: "Closing a Front Gap", hook: "We closed this huge front gap in just 45 minutes without braces." },
+            { type: 'Transformation', idea: "Old Metal Crown Replaced", hook: "That ugly black line near your gums? See how we replaced it flawlessly." },
+            
+            // Myth-busting (5)
+            { type: 'Myth-busting', idea: "Scaling Loosens Teeth", hook: "The biggest lie Indians believe about the dentist." },
+            { type: 'Myth-busting', idea: "Root Canals are Painful", hook: "Still scared of Root Canals in 2026? You need to watch this." },
+            { type: 'Myth-busting', idea: "Hard Brushing is Better", hook: "Stop scrubbing your teeth like bathroom tiles! You are erasing your gums." },
+            { type: 'Myth-busting', idea: "Bleeding Gums means Stop Brushing", hook: "Gums bleeding? You actually need to brush MORE, not less." },
+            { type: 'Myth-busting', idea: "White Teeth = Healthy Teeth", hook: "Just because they are white, doesn't mean they are healthy. Let's look closer." },
+            
+            // Authority (4)
+            { type: 'Authority', idea: "Clinic Hygiene Tour", hook: "Ever wonder how clean our tools actually are? Let me show you the lab." },
+            { type: 'Authority', idea: "Meet the Chief Doctor", hook: "Why did I become a dentist in {city}? It's not what you think." },
+            { type: 'Authority', idea: "Our 3D Scanner Tech", hook: "No more messy impression goo in your mouth. We use 3D lasers now." },
+            { type: 'Authority', idea: "Why We Don't Rush", hook: "We book 45 minutes for procedures others rush in 15. Here's why." },
+            
+            // Emotional (3)
+            { type: 'Emotional', idea: "Overcoming Extreme Dental Phobia", hook: "She hadn't seen a dentist in 15 years because she was terrified. Meet Priya." },
+            { type: 'Emotional', idea: "Wedding Day Confidence", hook: "She almost didn't smile in her wedding photos until she visited us." },
+            { type: 'Emotional', idea: "Getting the Job", hook: "He fixed his broken front teeth and finally nailed the interview." }
+        ];
+
+        // Shuffle the 30 unique concepts
+        let shuffledConcepts = [...coreConcepts];
+        for (let i = shuffledConcepts.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [shuffledConcepts[i], shuffledConcepts[j]] = [shuffledConcepts[j], shuffledConcepts[i]];
+        }
+
+        // Force Day 1 to be an Authority post for a strong intro
+        const authIndex = shuffledConcepts.findIndex(c => c.type === 'Authority');
+        if(authIndex !== -1) {
+            const temp = shuffledConcepts[0];
+            shuffledConcepts[0] = shuffledConcepts[authIndex];
+            shuffledConcepts[authIndex] = temp;
+        }
+
+        // Generate the full 30-day array dynamically
+        let daysData = [];
+        const times = ["9:00 AM", "12:30 PM", "5:00 PM", "6:30 PM", "8:00 PM"];
+
+        shuffledConcepts.forEach((concept, index) => {
+            const time = times[Math.floor(Math.random() * times.length)];
+            
+            // Dynamic script generation tuned for MAXIMUM bookings and reach
+            let scriptBase = "";
+            let captionBase = "";
+            let ctaBase = "DM 'SMILE' for a priority consultation.";
+            let engagementBase = `Engage with 10 local accounts in {city} related to health/wellness.`;
+            
+            if(concept.type === 'Educational') {
+                scriptBase = `Did you know about ${concept.idea.toLowerCase()}?\nMost people in {city} get this wrong, leading to expensive treatments later.\nHere is the exact framework to fix it right now.\nSave this video so you don't forget, and share it with a friend who needs to hear this.`;
+                captionBase = `Let's talk about ${concept.idea.toLowerCase()}. 🦷\n\nPreventative care is the best way to save money and avoid pain. At {clinic}, we believe in educating our patients first so you never have to guess.\n\n👇 Drop your questions below or DM us to book a preventative scan!`;
+                ctaBase = "DM 'CHECKUP' to claim your free 10-min digital scan.";
+            } else if(concept.type === 'Transformation') {
+                scriptBase = `Look at this amazing case of ${concept.idea.toLowerCase()}.\nOur patient came to us unhappy with their smile.\nUsing advanced techniques at {clinic}, we fixed it completely pain-free.\nThe results speak for themselves. You don't have to hide your smile anymore.`;
+                captionBase = `A total transformation at {clinic}! ✨\n\nWe love seeing our patients leave with newfound confidence. We customized this exact treatment plan for their face shape and bite.\n\nWant results like this?\n💬 DM 'TRANSFORM' for a virtual assessment.`;
+                ctaBase = "DM 'TRANSFORM' for a virtual smile assessment.";
+                engagementBase = `Target local {city} wedding/lifestyle hashtags. Engaged couples are high-intent leads.`;
+            } else if(concept.type === 'Myth-busting') {
+                scriptBase = `Myth check! People say ${concept.idea.toLowerCase()}.\nThis is 100% false and could be actively hurting your teeth.\nThe actual truth is backed by science.\nStop believing the rumors and consult an expert!`;
+                captionBase = `Busting dangerous dental myths today! 🛑\n\nIt's crazy how much misinformation is out there. At {clinic}, we use evidence-based dentistry to protect your smile.\n\nDid you believe this myth?\n👇 Let us know in the comments!`;
+                engagementBase = `Reply to comments on local {city} news pages to establish authority.`;
+            } else if(concept.type === 'Authority') {
+                scriptBase = `Welcome to {clinic}. Today we are looking at ${concept.idea.toLowerCase()}.\nWe invest heavily in this because your safety, comfort, and results are our top priority.\nWe refuse to cut corners in {city}.`;
+                captionBase = `Behind the scenes at {clinic}. 🛡️\n\nTransparency is key to building trust. We want you to feel 100% comfortable before you ever sit in the chair.\n\nCome visit our state-of-the-art facility in {city}!\n🔗 Click the link in our bio to book a clinic tour/consult.`;
+                ctaBase = "Click the link in our bio to book your priority slot.";
+                engagementBase = `Collaborate with 2 local businesses (salons/gyms) in {city} for cross-promotion.`;
+            } else if(concept.type === 'Emotional') {
+                scriptBase = `This story about ${concept.idea.toLowerCase()} almost made us cry.\nIt reminds us exactly why we practice dentistry.\nChanging lives, one smile at a time right here in {city}.\nYou deserve to smile without fear. We are here for you.`;
+                captionBase = `Dentistry is more than just teeth. 💙\n\nWe practice empathy-first care at {clinic}. If you have anxiety or have been putting off the dentist, we promise to listen and go at your pace.\n\nYou are safe here.\n💬 DM 'CHAT' and let's talk about your concerns.`;
+                ctaBase = "DM 'CHAT' and let's talk about your concerns. No tools, just a chat.";
+            }
+
+            daysData.push({
+                day: index + 1,
+                type: concept.type,
+                theme: concept.type, 
+                idea: concept.idea,
+                hook: `"${concept.hook}"`,
+                script: scriptBase,
+                caption: captionBase,
+                cta: ctaBase,
+                time: time,
+                hashtags: `#${concept.type.replace('-','')}Dentistry #SmileMakeover #{city}Dentist`,
+                story: `Poll/Q&A relating to ${concept.idea}. 'Have you ever experienced this?'`,
+                engagement: engagementBase,
+                completed: false
+            });
+        });
+
+        // App State
+        let currentDayIndex = 0;
+        let clinicName = "Elite Dental";
+        let city = "Mumbai";
+
+        // --- 2. DOM ELEMENTS ---
+        const els = {
+            daysList: document.getElementById('days-list'),
+            progressBar: document.getElementById('progress-bar'),
+            progressText: document.getElementById('progress-text'),
+            completedCount: document.getElementById('completed-count'),
+            
+            inputClinic: document.getElementById('input-clinic'),
+            inputCity: document.getElementById('input-city'),
+            
+            displayDayTitle: document.getElementById('display-day-title'),
+            typeBadge: document.getElementById('content-type-badge'),
+            themeText: document.getElementById('content-theme'),
+            reelIdea: document.getElementById('reel-idea'),
+            postingTime: document.getElementById('posting-time'),
+            hookText: document.getElementById('hook-text'),
+            ctaText: document.getElementById('cta-text'),
+            scriptText: document.getElementById('script-text'),
+            captionText: document.getElementById('caption-text'),
+            hashtagsText: document.getElementById('hashtags-text'),
+            storyStrategy: document.getElementById('story-strategy'),
+            engagementActions: document.getElementById('engagement-actions'),
+            
+            btnComplete: document.getElementById('btn-complete'),
+            contentEngine: document.getElementById('content-engine')
+        };
+
+        // --- 3. CORE FUNCTIONS ---
+
+        function init() {
+            renderSidebar();
+            selectDay(0);
+            updateGlobalPlaceholders();
+            setupInteractivity();
+            
+            els.inputClinic.addEventListener('input', (e) => {
+                clinicName = e.target.value || "Elite Dental";
+                updateUI();
+                updateGlobalPlaceholders();
+            });
+            els.inputCity.addEventListener('input', (e) => {
+                city = e.target.value || "Mumbai";
+                updateUI();
+                updateGlobalPlaceholders();
+            });
+        }
+
+        function renderSidebar() {
+            els.daysList.innerHTML = '';
+            let completedCount = 0;
+
+            daysData.forEach((data, index) => {
+                if(data.completed) completedCount++;
+
+                const btn = document.createElement('button');
+                btn.className = `interactive-el w-full text-left px-4 py-3 rounded-lg text-sm font-bold transition-all duration-200 flex items-center justify-between group border border-transparent ${index === currentDayIndex ? 'tab-active' : 'text-gray-500 hover:bg-gray-900 hover:text-white'}`;
+                btn.onclick = () => selectDay(index);
+                
+                let iconClass = 'ph-circle text-gray-600';
+                if(data.completed) iconClass = 'ph-fill ph-check-circle text-primary shadow-[0_0_10px_#00f2fe] rounded-full';
+                else if (index === currentDayIndex) iconClass = 'ph-fill ph-play-circle text-primary';
+
+                btn.innerHTML = `
+                    <span class="flex items-center gap-3">
+                        <i class="${iconClass} text-xl group-hover:scale-110 transition-transform"></i>
+                        Day ${data.day}
+                    </span>
+                    <span class="text-[9px] uppercase tracking-widest opacity-50 font-bold">${data.type.substring(0,3)}</span>
+                `;
+                els.daysList.appendChild(btn);
+            });
+
+            // Update Progress
+            const progress = Math.round((completedCount / 30) * 100);
+            els.progressBar.style.width = `${progress}%`;
+            els.progressText.innerText = `${progress}%`;
+            els.completedCount.innerText = completedCount;
+        }
+
+        function selectDay(index) {
+            currentDayIndex = index;
+            renderSidebar(); 
+            updateUI(); 
+            
+            els.contentEngine.classList.remove('fade-in');
+            void els.contentEngine.offsetWidth; 
+            els.contentEngine.classList.add('fade-in');
+            
+            if(window.innerWidth < 1024) {
+                document.getElementById('main-scroll-area').scrollTop = 0;
+            }
+        }
+
+        function formatText(text) {
+            if(!text) return "";
+            return text
+                .replace(/{clinic}/g, clinicName)
+                .replace(/{city}/g, city);
+        }
+
+        function updateUI() {
+            const data = daysData[currentDayIndex];
+            
+            els.displayDayTitle.innerText = `Day ${data.day} Execution Plan`;
+            els.themeText.innerText = data.theme;
+            
+            // Badge styling
+            els.typeBadge.innerText = data.type;
+            let badgeColors = "bg-primary/10 text-primary border-primary/20";
+            if(data.type === 'Transformation') badgeColors = "bg-green-500/10 text-green-400 border-green-500/20";
+            if(data.type === 'Myth-busting') badgeColors = "bg-red-500/10 text-red-500 border-red-500/20";
+            if(data.type === 'Authority') badgeColors = "bg-purple-500/10 text-purple-400 border-purple-500/20";
+            if(data.type === 'Emotional') badgeColors = "bg-pink-500/10 text-pink-400 border-pink-500/20";
+            els.typeBadge.className = `px-3 py-1 text-[10px] font-bold uppercase tracking-widest rounded-full border inline-block ${badgeColors}`;
+
+            els.reelIdea.innerText = formatText(data.idea);
+            els.postingTime.innerHTML = `<i class="ph-fill ph-clock text-primary"></i> ${data.time}`;
+            els.hookText.innerText = `"${formatText(data.hook)}"`;
+            els.ctaText.innerText = formatText(data.cta);
+            els.scriptText.innerText = formatText(data.script);
+            els.captionText.innerText = formatText(data.caption);
+            
+            const dynamicTags = `#${city.replace(/\s+/g, '')}Dentist #${city.replace(/\s+/g, '')}Clinic #${clinicName.replace(/\s+/g, '')}`;
+            els.hashtagsText.innerText = `${data.hashtags} ${dynamicTags}`;
+            
+            els.storyStrategy.innerText = formatText(data.story);
+            els.engagementActions.innerText = formatText(data.engagement);
+
+            // Update Complete Button
+            if(data.completed) {
+                els.btnComplete.innerHTML = `<i class="ph-bold ph-check-circle text-green-500 text-lg"></i> Completed`;
+                els.btnComplete.classList.replace('bg-gray-900', 'bg-green-500/10');
+                els.btnComplete.classList.replace('border-gray-700', 'border-green-500/30');
+                els.btnComplete.classList.add('text-green-500');
+                els.btnComplete.classList.remove('text-gray-300');
+            } else {
+                els.btnComplete.innerHTML = `<i class="ph-bold ph-check-circle text-lg group-hover:text-green-500 transition-colors"></i> Mark Complete`;
+                els.btnComplete.classList.replace('bg-green-500/10', 'bg-gray-900');
+                els.btnComplete.classList.replace('border-green-500/30', 'border-gray-700');
+                els.btnComplete.classList.remove('text-green-500');
+                els.btnComplete.classList.add('text-gray-300');
+            }
+        }
+
+        function updateGlobalPlaceholders() {
+            document.querySelectorAll('.custom-clinic').forEach(el => el.innerText = clinicName);
+            document.querySelectorAll('.custom-clinic-nospace').forEach(el => el.innerText = clinicName.replace(/\s+/g, ''));
+            document.getElementById('print-clinic').innerText = clinicName;
+            document.getElementById('print-city').innerText = city;
+        }
+
+        function toggleDayCompletion() {
+            daysData[currentDayIndex].completed = !daysData[currentDayIndex].completed;
+            renderSidebar();
+            updateUI();
+            showToast(daysData[currentDayIndex].completed ? "Day Secured! ⚡" : "Day marked as pending.");
+            
+            if(daysData[currentDayIndex].completed && currentDayIndex < 29) {
+                setTimeout(() => selectDay(currentDayIndex + 1), 600);
+            }
+        }
+
+        // --- UTILS & INTERACTIVITY ---
+        
+        function copyToClipboard(elementId) {
+            const text = document.getElementById(elementId).innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                showToast("Caption copied to clipboard!");
+            });
+        }
+
+        function copyText(el) {
+            let text = "";
+            // Extract only the text, ignoring child nodes like the "Click to Copy" overlay
+            for (let node of el.childNodes) {
+                if (node.nodeType === 3) { text += node.nodeValue; }
+            }
+            if(!text.trim() && el.querySelector('p')) {
+                text = el.querySelector('p').innerText; // fallback for complex structures
+            }
+            navigator.clipboard.writeText(text.trim()).then(() => {
+                showToast("Copied successfully!");
+            });
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-msg').innerText = msg;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+
+        function setupInteractivity() {
+            // 3D Tilt Cards
+            const tiltWrappers = document.querySelectorAll('.tilt-wrapper');
+            tiltWrappers.forEach(wrapper => {
+                const inner = wrapper.querySelector('.tilt-element');
+                wrapper.addEventListener('mousemove', (e) => {
+                    const rect = wrapper.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    const rotateX = ((y - centerY) / centerY) * -15;
+                    const rotateY = ((x - centerX) / centerX) * 15;
+                    inner.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.05, 1.05, 1.05)`;
+                });
+                wrapper.addEventListener('mouseleave', () => {
+                    inner.style.transform = `rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+                });
+            });
+
+            // Radial Glow Hover on Cards
+            document.getElementById("stats-grid").onmousemove = e => {
+                for(const card of document.querySelectorAll(".glass-card")) {
+                    const rect = card.getBoundingClientRect(),
+                          x = e.clientX - rect.left,
+                          y = e.clientY - rect.top;
+                    card.style.setProperty("--mouse-x", `${x}px`);
+                    card.style.setProperty("--mouse-y", `${y}px`);
+                }
+            }
+        }
+
+        // --- EXPORT PDF ---
+        function exportToPDF() {
+            showToast("Generating Blueprint... Please wait.");
+            const element = document.getElementById('export-content');
+            
+            // Temporarily adjust classes for better PDF rendering
+            element.classList.add('bg-white', 'text-black', 'p-8');
+            const glassCards = element.querySelectorAll('.glass-card, .bg-\\[\\#080808\\], .bg-\\[\\#0a0a0a\\], .bg-\\[\\#0f0f0f\\], .bg-\\[\\#050505\\]');
+            glassCards.forEach(card => card.classList.add('!bg-gray-50', '!text-black', '!border-gray-200'));
+            
+            const textElements = element.querySelectorAll('.text-white, .text-gray-300, .text-gray-400');
+            textElements.forEach(txt => txt.classList.add('!text-gray-800'));
+
+            // Show Print headers
+            document.querySelectorAll('.print-only').forEach(el => el.style.display = 'block');
+
+            const opt = {
+                margin:       10,
+                filename:     `OWNIT_30_Day_${clinicName.replace(/\s+/g, '_')}.pdf`,
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2, useCORS: true, ignoreElements: (el) => el.hasAttribute('data-html2canvas-ignore') },
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            html2pdf().set(opt).from(element).save().then(() => {
+                // Revert styling
+                element.classList.remove('bg-white', 'text-black', 'p-8');
+                glassCards.forEach(card => card.classList.remove('!bg-gray-50', '!text-black', '!border-gray-200'));
+                textElements.forEach(txt => txt.classList.remove('!text-gray-800'));
+                document.querySelectorAll('.print-only').forEach(el => el.style.display = 'none');
+                showToast("Blueprint Downloaded successfully! 🚀");
+            });
+        }
+
+        // Run
+        init();
+
+    </script>
+</body>
+</html>

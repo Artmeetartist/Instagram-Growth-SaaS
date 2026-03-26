@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <!-- Premium SEO Optimization -->
+    <title>OWNIT | 180-Day Legacy OS | Elite Dental Growth</title>
+    <meta name="description" content="The ultimate 180-Day Legacy OS for elite dental clinics. Generate 1,000,000+ followers, automate high-ticket leads, and establish total market monopoly.">
+    <meta name="keywords" content="dental clinic marketing, dental instagram growth, dentist social media, OWNIT OS, high-ticket dental leads, dental clinic SEO, dental practice growth">
+    <meta name="author" content="OWNIT Systems">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        // Premium Dental Clinic Palette
+                        brandBlue: '#2563eb',   // Trust/Medical Blue
+                        brandTeal: '#0d9488',   // Clinical Teal
+                        brandCyan: '#06b6d4',   // Fresh Cyan
+                        surface: '#ffffff',
+                        background: '#f8fafc',  // Slate 50
+                        borderLight: '#e2e8f0', // Slate 200
+                        textMain: '#0f172a',    // Slate 900
+                        textMuted: '#64748b',   // Slate 500
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    animation: {
+                        'slide-up': 'slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                        'fade-in': 'fadeIn 0.3s ease-out forwards',
+                    },
+                    keyframes: {
+                        slideUp: {
+                            '0%': { opacity: '0', transform: 'translateY(10px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        }
+                    },
+                    boxShadow: {
+                        'premium': '0 4px 20px -2px rgba(37, 99, 235, 0.05)',
+                        'premium-hover': '0 10px 25px -5px rgba(37, 99, 235, 0.1)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <!-- html2pdf.js for Export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" defer></script>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            color: #0f172a;
+            -webkit-tap-highlight-color: transparent;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .dark body {
+            background-color: #050507;
+            color: #f8fafc;
+        }
+
+        h1, h2, h3, h4, .font-display { font-family: 'Plus Jakarta Sans', sans-serif; }
+
+        /* Crisp Scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        
+        .dark ::-webkit-scrollbar-thumb { background: #334155; }
+        .dark ::-webkit-scrollbar-thumb:hover { background: #475569; }
+
+        /* Dynamic High-End Cards */
+        .dynamic-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 20px -2px rgba(37, 99, 235, 0.05);
+            transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.3s ease;
+        }
+        
+        .dark .dynamic-card {
+            background: #0a0a0c;
+            border: 1px solid rgba(255,255,255,0.05);
+            box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.5);
+        }
+
+        @media (hover: hover) {
+            .dynamic-card:hover {
+                border-color: rgba(37, 99, 235, 0.3);
+                transform: translateY(-2px);
+                box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.1);
+            }
+            .dark .dynamic-card:hover {
+                border-color: rgba(37, 99, 235, 0.5);
+                box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.2);
+            }
+            .interactive-btn:hover { transform: translateY(-1px); }
+        }
+        .interactive-btn:active { transform: scale(0.98); transition: transform 0.05s; }
+
+        /* Day Tab Active State */
+        .tab-active {
+            background: #f0fdfa; /* Teal 50 */
+            border-left: 3px solid #0d9488;
+            color: #0f172a;
+            font-weight: 600;
+        }
+        .dark .tab-active {
+            background: rgba(13, 148, 136, 0.1);
+            border-left: 3px solid #14b8a6;
+            color: #ffffff;
+        }
+
+        /* Elite Gradient utilities */
+        .elite-gradient-bg {
+            background: linear-gradient(135deg, #2563eb, #06b6d4);
+        }
+        .elite-gradient-text {
+            background: linear-gradient(135deg, #2563eb, #0d9488);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .ambient-glow {
+            position: fixed; width: 50vw; height: 50vw;
+            border-radius: 50%; pointer-events: none; z-index: -1; top: -20%; right: -10%;
+            filter: blur(120px); opacity: 0.4; transition: opacity 0.5s ease;
+        }
+        .dark .ambient-glow {
+            background: radial-gradient(circle, rgba(37, 99, 235, 0.15) 0%, transparent 70%);
+        }
+
+        .print-only { display: none; }
+
+        /* Modal Preview specific styles */
+        .preview-paper {
+            width: 800px;
+            min-height: 1130px;
+            background: white;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            margin: 0 auto;
+            flex-shrink: 0;
+            border-radius: 4px;
+            overflow: hidden;
+            transform-origin: top center;
+        }
+        
+        @media (max-width: 850px) {
+            .preview-paper {
+                transform: scale(0.4);
+                margin-bottom: -650px; /* offset the massive scaling */
+            }
+        }
+        @media (min-width: 851px) and (max-width: 1024px) {
+            .preview-paper { transform: scale(0.7); margin-bottom: -300px; }
+        }
+    </style>
+</head>
+<body class="h-screen flex overflow-hidden relative transition-colors duration-300">
+    
+    <div class="ambient-glow"></div>
+
+    <!-- MOBILE HEADER -->
+    <header class="lg:hidden fixed top-0 w-full z-40 bg-white/95 dark:bg-[#050507]/95 backdrop-blur-md border-b border-borderLight dark:border-white/10 px-5 py-3.5 flex items-center justify-between transition-colors">
+        <div class="flex items-center gap-2.5">
+            <div class="w-8 h-8 rounded-lg elite-gradient-bg flex items-center justify-center shadow-md">
+                <i class="ph-bold ph-tooth text-white text-sm"></i>
+            </div>
+            <h1 class="font-display font-bold text-xl tracking-wide text-textMain dark:text-white">OWNIT</h1>
+        </div>
+        <div class="flex items-center gap-2">
+            <button id="mobile-menu-btn" class="p-1.5 text-textMuted dark:text-slate-400 hover:text-brandBlue dark:hover:text-blue-400 interactive-btn">
+                <i class="ph-bold ph-list text-2xl"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- SIDEBAR BACKDROP (Mobile) -->
+    <div id="sidebar-backdrop" class="fixed inset-0 bg-slate-900/40 dark:bg-black/60 backdrop-blur-sm z-40 hidden lg:hidden opacity-0 transition-opacity duration-200"></div>
+
+    <!-- LEFT SIDEBAR: 180 Days Drawer -->
+    <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-[85vw] max-w-[320px] bg-white dark:bg-[#0a0a0c] border-r border-borderLight dark:border-white/10 flex flex-col transform -translate-x-full lg:translate-x-0 lg:relative lg:w-80 transition-all duration-300 ease-in-out shadow-2xl lg:shadow-none">
+        
+        <!-- Sidebar Header -->
+        <div class="p-5 lg:p-6 border-b border-borderLight dark:border-white/10 flex items-center justify-between bg-white dark:bg-[#0a0a0c] relative z-10 transition-colors">
+            <div class="flex items-center gap-3">
+                <div class="hidden lg:flex w-10 h-10 rounded-xl elite-gradient-bg items-center justify-center shadow-md shadow-blue-500/20">
+                    <i class="ph-bold ph-tooth text-white text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="hidden lg:block font-display font-bold text-xl tracking-wide text-textMain dark:text-white leading-tight">OWNIT</h1>
+                    <p class="text-[10px] uppercase tracking-widest text-brandBlue dark:text-cyan-400 font-bold">180-Day Legacy OS</p>
+                </div>
+            </div>
+            <button id="close-sidebar-btn" class="lg:hidden p-2 text-textMuted dark:text-slate-400 hover:text-textMain dark:hover:text-white interactive-btn bg-slate-50 dark:bg-[#111114] rounded-md border border-borderLight dark:border-white/10">
+                <i class="ph-bold ph-x text-lg"></i>
+            </button>
+        </div>
+
+        <!-- Progress Tracker -->
+        <div class="p-5 border-b border-borderLight dark:border-white/10 bg-slate-50/50 dark:bg-[#111114]/50 transition-colors">
+            <div class="flex justify-between text-xs mb-2 text-textMain dark:text-slate-200 font-semibold">
+                <span>System Progress</span>
+                <span id="progress-text" class="text-brandBlue dark:text-cyan-400 font-bold">0%</span>
+            </div>
+            <div class="w-full bg-slate-200 dark:bg-slate-800 rounded-full h-2 overflow-hidden">
+                <div id="progress-bar" class="elite-gradient-bg h-2 rounded-full transition-all duration-500 w-0"></div>
+            </div>
+            <p class="text-[10px] text-textMuted dark:text-slate-500 mt-2 text-center font-medium"><span id="completed-count">0</span> of 180 Days Completed</p>
+        </div>
+
+        <!-- Days List -->
+        <div class="flex-1 overflow-y-auto py-2 px-2 space-y-0.5" id="days-list">
+            <!-- JS will inject 180 unique days here -->
+        </div>
+        
+        <!-- Bottom Settings/Export -->
+        <div class="p-4 border-t border-borderLight dark:border-white/10 bg-white dark:bg-[#0a0a0c] transition-colors">
+            <button onclick="previewMasterplan()" class="interactive-btn w-full py-3.5 px-4 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-sm font-bold rounded-xl transition-opacity hover:bg-brandBlue dark:hover:bg-slate-200 flex items-center justify-center gap-2 shadow-md">
+                <i class="ph-bold ph-file-pdf text-lg"></i> Preview & Export PDF
+            </button>
+        </div>
+    </aside>
+
+    <!-- MAIN DASHBOARD CONTENT -->
+    <main class="flex-1 h-full flex flex-col relative overflow-y-auto overflow-x-hidden pt-[68px] lg:pt-0" id="main-scroll-area">
+        
+        <!-- Top Navbar (Desktop) -->
+        <header class="hidden md:flex sticky top-0 z-20 bg-white/90 dark:bg-[#050507]/90 backdrop-blur-xl border-b border-borderLight dark:border-white/10 px-8 py-5 justify-between items-center transition-colors">
+            <div>
+                <h2 class="text-2xl font-display font-bold text-textMain dark:text-white tracking-tight">The Legacy Dashboard</h2>
+                <p class="text-sm text-textMuted dark:text-slate-400 mt-1 font-medium">Total Market Monopoly & High-Ticket Execution</p>
+            </div>
+            
+            <div class="flex gap-4 items-center">
+                <div class="flex items-center bg-slate-50 dark:bg-[#111114] p-2 rounded-xl border border-borderLight dark:border-white/10 shadow-sm transition-colors">
+                    <div class="flex items-center gap-2 px-3 border-r border-borderLight dark:border-white/10">
+                        <i class="ph-fill ph-magic-wand text-brandBlue dark:text-cyan-400"></i>
+                        <span class="text-xs font-bold text-textMuted dark:text-slate-400 uppercase tracking-wider hidden lg:inline">AI Config</span>
+                    </div>
+                    <input type="text" id="input-clinic" placeholder="Clinic Name" value="Apex Dental Studio" 
+                        class="bg-transparent border-none text-sm text-textMain dark:text-white placeholder-slate-400 dark:placeholder-slate-600 focus:ring-0 focus:outline-none w-36 font-semibold px-3">
+                    <div class="w-px h-5 bg-borderLight dark:bg-white/10"></div>
+                    <input type="text" id="input-city" placeholder="Region" value="Delhi NCR" 
+                        class="bg-transparent border-none text-sm text-textMain dark:text-white placeholder-slate-400 dark:placeholder-slate-600 focus:ring-0 focus:outline-none w-28 font-semibold pl-3">
+                </div>
+            </div>
+        </header>
+
+        <!-- Mobile Config Area -->
+        <div class="md:hidden px-4 py-4 border-b border-borderLight dark:border-white/10 bg-white/80 dark:bg-[#050507]/80 backdrop-blur-md transition-colors">
+            <div class="flex items-center bg-slate-50 dark:bg-[#111114] p-2.5 rounded-xl border border-borderLight dark:border-white/10 shadow-sm">
+                <i class="ph-fill ph-magic-wand text-brandBlue dark:text-cyan-400 px-2 text-lg"></i>
+                <input type="text" id="mobile-input-clinic" placeholder="Clinic Name" value="Apex Dental Studio" class="bg-transparent border-none text-sm text-textMain dark:text-white focus:outline-none w-1/2 font-semibold border-r border-borderLight dark:border-white/10 pr-3">
+                <input type="text" id="mobile-input-city" placeholder="Region" value="Delhi NCR" class="bg-transparent border-none text-sm text-textMain dark:text-white focus:outline-none w-1/2 font-semibold pl-3">
+            </div>
+        </div>
+
+        <div class="p-4 lg:p-8 max-w-7xl mx-auto w-full space-y-6 lg:space-y-8 pb-24" id="export-content">
+
+            <!-- Stats Row -->
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-5" data-html2canvas-ignore>
+                <div class="dynamic-card p-5 rounded-2xl flex flex-col justify-between h-full">
+                    <p class="text-textMuted dark:text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-3">Follower Target</p>
+                    <div class="flex items-end justify-between">
+                        <h3 class="text-2xl lg:text-3xl font-display font-extrabold text-textMain dark:text-white">1M+</h3>
+                        <i class="ph-fill ph-users-three text-brandBlue dark:text-cyan-500 text-3xl opacity-90"></i>
+                    </div>
+                </div>
+                <div class="dynamic-card p-5 rounded-2xl flex flex-col justify-between h-full">
+                    <p class="text-textMuted dark:text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-3">High-Ticket Leads</p>
+                    <div class="flex items-end justify-between">
+                        <h3 class="text-2xl lg:text-3xl font-display font-extrabold text-textMain dark:text-white">8.5k</h3>
+                        <i class="ph-fill ph-magnet text-brandCyan dark:text-blue-400 text-3xl opacity-90"></i>
+                    </div>
+                </div>
+                <div class="dynamic-card p-5 rounded-2xl flex flex-col justify-between h-full relative overflow-hidden dark:bg-gradient-to-br dark:from-[#0a0a0c] dark:to-teal-900/10">
+                    <div class="absolute -right-4 -bottom-4 w-20 h-20 bg-teal-500/10 dark:bg-teal-400/10 rounded-full blur-2xl"></div>
+                    <p class="text-textMuted dark:text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-3 relative z-10">Daily Bookings</p>
+                    <div class="flex items-end justify-between relative z-10">
+                        <h3 class="text-2xl lg:text-3xl font-display font-extrabold text-textMain dark:text-white">50-80</h3>
+                        <i class="ph-fill ph-calendar-plus text-brandTeal dark:text-teal-400 text-3xl opacity-90"></i>
+                    </div>
+                </div>
+                <div class="dynamic-card p-5 rounded-2xl flex flex-col justify-between h-full">
+                    <p class="text-textMuted dark:text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-3">Market Position</p>
+                    <div class="flex items-end justify-between">
+                        <h3 class="text-2xl lg:text-3xl font-display font-extrabold text-textMain dark:text-white">#1</h3>
+                        <i class="ph-fill ph-crown-simple text-amber-500 text-3xl opacity-90"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MAIN CONTENT AREA -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
+                
+                <!-- LEFT COLUMN: The Daily Content Engine -->
+                <article class="lg:col-span-2 space-y-4 lg:space-y-6">
+                    
+                    <div class="flex justify-between items-center" data-html2canvas-ignore>
+                        <h3 class="text-xl lg:text-2xl font-display font-extrabold text-textMain dark:text-white flex items-center gap-3">
+                            <span class="w-1.5 h-6 bg-brandBlue dark:bg-cyan-500 rounded-full"></span>
+                            <span id="display-day-title">Day 1 Execution</span>
+                        </h3>
+                        <button onclick="toggleDayCompletion()" id="btn-complete" class="interactive-btn px-4 lg:px-6 py-2.5 lg:py-3 bg-white dark:bg-[#111114] hover:bg-slate-50 dark:hover:bg-[#1a1a1f] text-textMuted dark:text-slate-300 hover:text-textMain dark:hover:text-white rounded-xl text-sm font-bold transition-colors border border-borderLight dark:border-white/10 flex items-center justify-center gap-2 shadow-sm group">
+                            <i class="ph-bold ph-check-circle text-lg transition-colors group-hover:text-green-500" id="btn-complete-icon"></i> 
+                            <span id="btn-complete-text" class="hidden sm:inline">Mark Complete</span>
+                        </button>
+                    </div>
+
+                    <!-- Day Content Card -->
+                    <div class="dynamic-card rounded-2xl overflow-hidden animate-slide-up" id="content-engine">
+                        
+                        <!-- Header Banner -->
+                        <div class="bg-slate-50/80 dark:bg-[#0a0a0c] p-5 lg:p-6 border-b border-borderLight dark:border-white/5 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 transition-colors">
+                            <div class="w-full sm:w-auto">
+                                <div class="flex items-center gap-2 mb-2 lg:mb-3">
+                                    <span id="content-type-badge" class="px-2.5 py-1 text-[10px] font-bold uppercase tracking-widest rounded-md border">Educational</span>
+                                    <span class="text-xs text-textMuted dark:text-slate-400 font-medium">Theme: <span id="content-theme" class="text-textMain dark:text-white font-bold">Foundation</span></span>
+                                </div>
+                                <h4 id="reel-idea" class="text-lg lg:text-xl font-display font-extrabold text-textMain dark:text-white leading-tight">Loading Concept...</h4>
+                            </div>
+                            <div class="flex items-center gap-2 w-full sm:w-auto border-t border-borderLight dark:border-white/5 sm:border-t-0 pt-3 sm:pt-0 mt-1 sm:mt-0">
+                                <span class="sm:hidden text-xs text-textMuted dark:text-slate-400 font-bold uppercase tracking-widest">Time:</span>
+                                <p id="posting-time" class="text-textMain dark:text-white font-bold text-sm lg:text-base flex items-center gap-1.5 bg-white dark:bg-[#111114] px-3 py-1.5 rounded-lg border border-borderLight dark:border-white/10 shadow-sm"><i class="ph-fill ph-clock text-brandBlue dark:text-cyan-400"></i> 6:30 PM</p>
+                            </div>
+                        </div>
+
+                        <div class="p-5 lg:p-6 space-y-6 bg-white dark:bg-transparent">
+                            
+                            <!-- Hook & CTA Grid -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6">
+                                <div class="bg-slate-50 dark:bg-[#111114] rounded-xl p-4 lg:p-5 border border-borderLight dark:border-white/5 interactive-btn cursor-pointer" onclick="copyText(this)">
+                                    <h5 class="text-[10px] font-bold text-textMuted dark:text-slate-400 uppercase tracking-widest mb-2 flex items-center gap-2"><i class="ph-fill ph-fishing-rod text-brandBlue dark:text-blue-400 text-base"></i> 3-Second Hook</h5>
+                                    <p id="hook-text" class="text-textMain dark:text-slate-100 text-sm lg:text-base font-semibold leading-snug">"..."</p>
+                                </div>
+                                <div class="bg-slate-50 dark:bg-[#111114] rounded-xl p-4 lg:p-5 border border-borderLight dark:border-white/5 interactive-btn cursor-pointer" onclick="copyText(this)">
+                                    <h5 class="text-[10px] font-bold text-textMuted dark:text-slate-400 uppercase tracking-widest mb-2 flex items-center gap-2"><i class="ph-fill ph-cursor-click text-brandCyan dark:text-cyan-400 text-base"></i> Video CTA</h5>
+                                    <p id="cta-text" class="text-textMain dark:text-slate-100 text-sm lg:text-base font-semibold leading-snug">...</p>
+                                </div>
+                            </div>
+
+                            <!-- Script Area -->
+                            <div class="interactive-btn cursor-pointer w-full text-left" onclick="copyText(this)">
+                                <h5 class="text-[10px] font-bold text-textMuted dark:text-slate-400 uppercase tracking-widest mb-2 flex items-center gap-2"><i class="ph-fill ph-video-camera text-brandBlue dark:text-blue-400 text-base"></i> Full Video Script (15-20s)</h5>
+                                <div class="bg-slate-50 dark:bg-[#111114] hover:bg-slate-100 dark:hover:bg-[#16161a] transition-colors rounded-xl p-5 border border-borderLight dark:border-white/5 border-l-4 border-l-brandBlue dark:border-l-blue-500 relative shadow-sm">
+                                    <i class="ph-fill ph-quotes text-4xl text-slate-200 dark:text-white/5 absolute top-3 right-4 pointer-events-none"></i>
+                                    <p id="script-text" class="text-slate-800 dark:text-slate-300 text-sm lg:text-base leading-relaxed relative z-10 whitespace-pre-line font-medium">...</p>
+                                </div>
+                            </div>
+
+                            <!-- Caption & Hashtags -->
+                            <div class="bg-white dark:bg-[#0a0a0c] rounded-xl p-5 border border-borderLight dark:border-white/5 shadow-sm transition-colors">
+                                <div class="flex justify-between items-center mb-3">
+                                    <h5 class="text-[10px] font-bold text-textMuted dark:text-slate-400 uppercase tracking-widest flex items-center gap-2"><i class="ph-fill ph-text-align-left text-slate-400 dark:text-slate-500 text-base"></i> SEO Optimized Caption</h5>
+                                    <button class="interactive-btn text-xs text-brandBlue dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-bold uppercase tracking-wider transition-colors flex items-center gap-1 bg-blue-50 dark:bg-blue-500/10 border border-blue-100 dark:border-blue-500/20 px-3 py-1.5 rounded-lg" onclick="copyToClipboard('caption-text')" data-html2canvas-ignore><i class="ph-bold ph-copy"></i> Copy</button>
+                                </div>
+                                <p id="caption-text" class="text-slate-700 dark:text-slate-300 text-sm leading-relaxed mb-4 whitespace-pre-line font-medium lowercase">...</p>
+                                <div class="pt-4 border-t border-borderLight dark:border-white/10">
+                                    <p id="hashtags-text" class="text-brandCyan dark:text-cyan-400 text-xs lg:text-sm font-semibold leading-relaxed lowercase">...</p>
+                                </div>
+                            </div>
+
+                            <!-- Strategy Grid -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="bg-slate-50 dark:bg-[#111114] rounded-xl p-4 border border-borderLight dark:border-white/5">
+                                    <h5 class="text-[10px] font-bold text-textMuted dark:text-slate-400 uppercase tracking-widest mb-2 flex items-center gap-2"><i class="ph-fill ph-instagram-logo text-pink-500 text-base"></i> Story Retargeting</h5>
+                                    <p id="story-strategy" class="text-slate-800 dark:text-slate-300 text-xs font-medium leading-relaxed">...</p>
+                                </div>
+                                <div class="bg-slate-50 dark:bg-[#111114] rounded-xl p-4 border border-borderLight dark:border-white/5">
+                                    <h5 class="text-[10px] font-bold text-textMuted dark:text-slate-400 uppercase tracking-widest mb-2 flex items-center gap-2"><i class="ph-fill ph-chats-circle text-blue-500 dark:text-blue-400 text-base"></i> Engagement Actions</h5>
+                                    <p id="engagement-actions" class="text-slate-800 dark:text-slate-300 text-xs font-medium leading-relaxed">...</p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </article>
+
+                <!-- RIGHT COLUMN: Advanced OS Tools -->
+                <aside class="space-y-6">
+                    
+                    <!-- High Ticket Engine -->
+                    <div class="dynamic-card rounded-2xl border-blue-200 dark:border-blue-500/20 bg-blue-50/30 dark:bg-[#111114] p-5 lg:p-6 relative overflow-hidden group">
+                        <div class="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 dark:bg-blue-500/5 blur-3xl rounded-full"></div>
+                        <div class="inline-block px-2 py-1 bg-blue-100 dark:bg-blue-500/10 border border-blue-200 dark:border-blue-500/20 rounded-md text-[9px] font-bold text-brandBlue dark:text-blue-400 uppercase tracking-widest mb-4">Daily Funnel Config</div>
+                        <h4 class="text-lg font-display font-extrabold text-textMain dark:text-white mb-4 flex items-center gap-2 relative z-10">
+                            <i class="ph-fill ph-diamond text-brandBlue dark:text-blue-400 text-xl"></i> High-Ticket Flow
+                        </h4>
+                        
+                        <div class="space-y-4 relative z-10">
+                            <div>
+                                <p class="text-[10px] text-textMuted dark:text-slate-500 uppercase tracking-widest font-bold mb-1.5">DM Auto-Reply Script</p>
+                                <div class="bg-white dark:bg-[#0a0a0c] p-3.5 rounded-xl border border-borderLight dark:border-white/10 text-xs lg:text-sm text-slate-800 dark:text-slate-300 font-medium interactive-btn cursor-pointer shadow-sm" onclick="copyText(this)">
+                                    <span id="ht-reply-text">Loading...</span>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <p class="text-[10px] text-textMuted dark:text-slate-500 uppercase tracking-widest font-bold mb-1.5">Objection Handling</p>
+                                <div class="bg-white dark:bg-[#0a0a0c] p-3.5 rounded-xl border border-borderLight dark:border-white/10 text-xs lg:text-sm text-slate-800 dark:text-slate-300 font-medium interactive-btn cursor-pointer shadow-sm" onclick="copyText(this)">
+                                    <span id="ht-objection-text">Loading...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SEO & PR Dominance -->
+                    <div class="dynamic-card rounded-2xl p-5 lg:p-6 dark:bg-[#111114]">
+                        <div class="inline-block px-2 py-1 bg-teal-50 dark:bg-teal-500/10 border border-teal-100 dark:border-teal-500/20 rounded-md text-[9px] font-bold text-brandTeal dark:text-teal-400 uppercase tracking-widest mb-4">Omni-Channel PR</div>
+                        <h4 class="text-lg font-display font-extrabold text-textMain dark:text-white mb-3 flex items-center gap-2">
+                            <i class="ph-fill ph-globe-hemisphere-west text-brandTeal dark:text-teal-400 text-xl"></i> <span id="pr-title">Local Hijack</span>
+                        </h4>
+                        <div class="bg-slate-50 dark:bg-[#0a0a0c] rounded-xl p-4 border border-borderLight dark:border-white/10">
+                            <p id="pr-desc" class="text-xs lg:text-sm text-slate-700 dark:text-slate-300 leading-relaxed font-medium">Loading PR Action...</p>
+                        </div>
+                    </div>
+
+                    <!-- CEO Insights Panel -->
+                    <div class="bg-slate-900 dark:bg-[#0a0a0c] rounded-2xl border border-slate-800 dark:border-white/10 p-5 lg:p-6 relative overflow-hidden text-white dark:shadow-2xl">
+                        <i class="ph-fill ph-lightbulb text-6xl text-white/5 absolute -bottom-2 -right-2"></i>
+                        <h4 class="text-base lg:text-lg font-display font-extrabold mb-2 flex items-center gap-2 relative z-10">
+                            <i class="ph-fill ph-brain text-slate-400 dark:text-slate-500"></i> CEO Insight (Day <span id="ceo-day-num">1</span>)
+                        </h4>
+                        <p id="ceo-insight-text" class="text-xs lg:text-sm text-slate-300 dark:text-slate-400 leading-relaxed relative z-10 font-medium">
+                            Loading insight...
+                        </p>
+                    </div>
+
+                </aside>
+            </div>
+        </div>
+    </main>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="fixed bottom-6 left-1/2 transform -translate-x-1/2 translate-y-24 opacity-0 transition-all duration-300 bg-slate-900 dark:bg-white border border-slate-800 dark:border-white shadow-2xl px-6 py-3 rounded-full flex items-center gap-3 z-[100]">
+        <i class="ph-fill ph-check-circle text-green-400 dark:text-green-600 text-lg"></i>
+        <span id="toast-msg" class="text-sm font-semibold text-white dark:text-slate-900 whitespace-nowrap">Action successful</span>
+    </div>
+
+    <!-- PDF PREVIEW MODAL -->
+    <div id="pdf-preview-modal" class="fixed inset-0 z-[150] bg-slate-900/80 dark:bg-black/80 backdrop-blur-md hidden flex-col opacity-0 transition-opacity duration-300">
+        
+        <!-- Modal Header -->
+        <div class="bg-white dark:bg-[#0a0a0c] border-b border-borderLight dark:border-white/10 px-6 py-4 flex justify-between items-center shadow-sm">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-lg bg-red-100 dark:bg-red-500/20 text-red-600 dark:text-red-400 flex items-center justify-center">
+                    <i class="ph-bold ph-file-pdf text-lg"></i>
+                </div>
+                <div>
+                    <h2 class="text-lg font-display font-bold text-textMain dark:text-white leading-tight">Masterplan Preview</h2>
+                    <p class="text-[11px] text-textMuted dark:text-slate-400 font-medium uppercase tracking-wider">180-Day Legacy Strategy</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-3">
+                <button onclick="closePreview()" class="px-4 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-white/5 hover:text-slate-900 dark:hover:text-white rounded-lg text-sm font-semibold transition-colors">
+                    Cancel
+                </button>
+                <button onclick="downloadFromPreview()" id="btn-actual-download" class="px-5 py-2 bg-brandBlue text-white rounded-lg text-sm font-bold shadow-md shadow-blue-500/20 hover:bg-blue-700 transition-colors flex items-center gap-2">
+                    <i class="ph-bold ph-download-simple text-base"></i> Download Full PDF
+                </button>
+            </div>
+        </div>
+        
+        <!-- Modal Content (Scrollable Grid of PDF Pages) -->
+        <div class="flex-1 overflow-y-auto p-4 lg:p-10 bg-slate-100 dark:bg-[#050507] flex flex-col items-center gap-8 pb-32" id="preview-content-container">
+            <!-- Rendered PDF Pages will be injected here -->
+        </div>
+    </div>
+
+    <!-- MAIN JAVASCRIPT -->
+    <script>
+        // --- 1. STATE & PROCEDURAL GENERATION ENGINE ---
+        
+        let currentDayIndex = 0;
+        let clinicName = "Apex Dental Studio";
+        let city = "Delhi NCR";
+        let daysData = [];
+
+        const types = ['Educational', 'Transformation', 'Myth-busting', 'Authority', 'Emotional'];
+
+        // Core Generation Logic
+        function generateDetailedScript(type, idea, clinic) {
+            const h = `Hook: Stop scrolling! Did you know about ${idea}?`;
+            const p = `Problem: Most clinics in {city} won't tell you this, but ignoring this leads to massive pain and huge bills.`;
+            const s = `Solution: The truth is, fixing it requires a specific approach. At ${clinic}, we use advanced protocols to handle exactly this.`;
+            const c = `Call to Action: Don't wait until it hurts. Save this video and DM us 'SMILE' for a priority consultation.`;
+            return `${h}\n\n${p}\n\n${s}\n\n${c}`;
+        }
+
+        function generateCaption(type, idea, clinic) {
+            return `let's talk about the truth behind ${idea}... 🦷\n\nwe see patients every single week at ${clinic} who wish they knew this sooner. preventative care and the right knowledge is the absolute best way to save money and avoid pain.\n\n👇 drop your questions about this below, or dm us to book a scan.`;
+        }
+
+        function generateStory(type, idea) {
+            const formats = [
+                `Post a quick poll: 'Do you struggle with ${idea}?' Yes / Tell me more.`,
+                `Behind the scenes raw video talking about ${idea}. Keep it under 15s.`,
+                `Q&A Box: 'Drop your questions about ${idea} below!'`,
+                `Share a patient testimonial screenshot related to ${idea}.`,
+                `'True or False' quiz sticker about ${idea}.`
+            ];
+            return formats[Math.floor(Math.random() * formats.length)];
+        }
+
+        function generateEngagement(type, city) {
+            const targets = ['wedding planners', 'premium gyms', 'dermatologists', 'luxury salons', 'local cafes', 'mom bloggers'];
+            const target = targets[Math.floor(Math.random() * targets.length)];
+            return `Spend 10 minutes leaving genuine, non-salesy comments on 5 posts from ${target} in ${city}.`;
+        }
+
+        function generateHighTicketReply(type) {
+            if(type === 'Transformation') return `"Hi [Name]! Loved seeing your interest. Every smile is unique. Reply 'COST' and I'll send over our comprehensive guide on Veneers/Implants pricing."`;
+            return `"Hey! 👋 Thanks for reaching out to {clinic}. We specialize in painless, high-tech dentistry. Would you like to schedule a free 10-min digital scan?"`;
+        }
+
+        function generateHighTicketObjection(dayNum) {
+            const obs = [
+                `"I understand it's an investment. We offer 0% EMI. Shall we just do a free digital scan first?"`,
+                `"It's normal to be nervous! Our clinic has a 'comfort menu' (Netflix, headphones). Can we chat on a quick call?"`,
+                `"Let me send you 3 before/after photos of patients with your exact issue. It will ease your mind."`
+            ];
+            return obs[dayNum % obs.length];
+        }
+
+        function generatePR(dayNum) {
+            const prOptions = [
+                { t: "Local News Outreach", d: `Email 3 local journalists in {city} offering free expert commentary on seasonal dental issues.` },
+                { t: "Review Funnel", d: `Set up an SMS campaign: 'Rate us 5 stars to get a free whitening pen at your next visit.'` },
+                { t: "B2B Cross Promo", d: `Drop off 10 'Free Consultation' VIP cards to a luxury salon near your clinic.` },
+                { t: "Google My Business", d: `Upload today's video directly to your Google My Business profile for local SEO.` }
+            ];
+            return prOptions[dayNum % prOptions.length];
+        }
+
+        function getCeoInsight(dayNum) {
+            const phase = Math.floor((dayNum - 1) / 30); 
+            let base = "";
+            if(phase === 0) base = "Phase 1 (Foundation): We are training the algorithm. Don't worry about vanity metrics yet. Focus entirely on consistency and answering common objections.";
+            else if(phase === 1) base = "Phase 2 (Momentum): Now we track what's working. Which hooks got the most watch time? Double down on those formats this week.";
+            else if(phase === 2) base = "Phase 3 (Community): You are now a familiar face in {city}. It's time to heavily engage in DMs. Shift focus from 'views' to 'conversations'.";
+            else if(phase === 3) base = "Phase 4 (High-Ticket Scaling): Your authority is established. We push harder on Implants and Aligners now. They trust you enough to spend big.";
+            else if(phase === 4) base = "Phase 5 (Referral Engines): The pipeline is full. Now we implement Ambassador programs. Ask happy patients to tag {clinic} in their stories.";
+            else base = "Phase 6 (Monopoly): At 180 days, you transcend being a 'local clinic'. You are the unquestionable default authority. Your content library now converts while you sleep.";
+            return `${base} Today's focus is executing flawlessly.`;
+        }
+
+        function generate180Days() {
+            daysData = [];
+            for(let i=1; i<=180; i++) {
+                const type = types[i % types.length];
+                const adjs = ['Ultimate', 'Secret', 'Shocking', 'Hidden', 'Essential'];
+                const topics = ['Enamel', 'Root Canals', 'Veneers', 'Aligners', 'Gums', 'Implants', 'Whitening', 'Cavities'];
+                const idea = `${adjs[i % adjs.length]} Truth About ${topics[(i*3) % topics.length]} (Part ${i})`;
+                const time = ["9:00 AM", "12:30 PM", "5:00 PM", "6:30 PM"][i % 4];
+
+                daysData.push({
+                    day: i,
+                    type: type,
+                    theme: type,
+                    idea: idea,
+                    hook: `Stop scrolling! Did you know about ${idea}?`,
+                    script: generateDetailedScript(type, idea, "{clinic}"),
+                    caption: generateCaption(type, idea, "{clinic}"),
+                    cta: "dm 'SMILE' for a private consult.",
+                    time: time,
+                    hashtags: `#${type.toLowerCase()} #dentalcare #{city}dentist`,
+                    story: generateStory(type, idea),
+                    engagement: generateEngagement(type, "{city}"),
+                    htReply: generateHighTicketReply(type),
+                    htObjection: generateHighTicketObjection(i),
+                    pr: generatePR(i),
+                    ceoInsight: getCeoInsight(i),
+                    completed: false
+                });
+            }
+        }
+
+        // --- DOM ELEMENTS ---
+        const els = {
+            daysList: document.getElementById('days-list'),
+            progressBar: document.getElementById('progress-bar'),
+            progressText: document.getElementById('progress-text'),
+            completedCount: document.getElementById('completed-count'),
+            
+            inputClinic: document.getElementById('input-clinic'),
+            inputCity: document.getElementById('input-city'),
+            mobileInputClinic: document.getElementById('mobile-input-clinic'),
+            mobileInputCity: document.getElementById('mobile-input-city'),
+            
+            displayDayTitle: document.getElementById('display-day-title'),
+            typeBadge: document.getElementById('content-type-badge'),
+            themeText: document.getElementById('content-theme'),
+            reelIdea: document.getElementById('reel-idea'),
+            postingTime: document.getElementById('posting-time'),
+            hookText: document.getElementById('hook-text'),
+            ctaText: document.getElementById('cta-text'),
+            scriptText: document.getElementById('script-text'),
+            captionText: document.getElementById('caption-text'),
+            hashtagsText: document.getElementById('hashtags-text'),
+            storyStrategy: document.getElementById('story-strategy'),
+            engagementActions: document.getElementById('engagement-actions'),
+            
+            htReplyText: document.getElementById('ht-reply-text'),
+            htObjectionText: document.getElementById('ht-objection-text'),
+            prTitle: document.getElementById('pr-title'),
+            prDesc: document.getElementById('pr-desc'),
+            ceoDayNum: document.getElementById('ceo-day-num'),
+            ceoInsightText: document.getElementById('ceo-insight-text'),
+
+            btnComplete: document.getElementById('btn-complete'),
+            btnCompleteText: document.getElementById('btn-complete-text'),
+            btnCompleteIcon: document.getElementById('btn-complete-icon'),
+            contentEngine: document.getElementById('content-engine')
+        };
+
+        // --- CORE FUNCTIONS ---
+
+        function init() {
+            generate180Days();
+            renderSidebar();
+            selectDay(0);
+            updateGlobalPlaceholders();
+            setupMobileMenu();
+
+            // Enforce dark mode permanently
+            document.documentElement.classList.add('dark');
+
+            const updateState = (c, cy) => {
+                clinicName = c || "Apex Dental Studio";
+                city = cy || "Delhi NCR";
+                updateUI();
+                updateGlobalPlaceholders();
+            };
+
+            els.inputClinic.addEventListener('input', (e) => { els.mobileInputClinic.value = e.target.value; updateState(e.target.value, city); });
+            els.inputCity.addEventListener('input', (e) => { els.mobileInputCity.value = e.target.value; updateState(clinicName, e.target.value); });
+            els.mobileInputClinic.addEventListener('input', (e) => { els.inputClinic.value = e.target.value; updateState(e.target.value, city); });
+            els.mobileInputCity.addEventListener('input', (e) => { els.inputCity.value = e.target.value; updateState(clinicName, e.target.value); });
+        }
+
+        function setupMobileMenu() {
+            const sidebar = document.getElementById('sidebar');
+            const backdrop = document.getElementById('sidebar-backdrop');
+            const openBtn = document.getElementById('mobile-menu-btn');
+            const closeBtn = document.getElementById('close-sidebar-btn');
+
+            const openMenu = () => {
+                sidebar.classList.remove('-translate-x-full');
+                backdrop.classList.remove('hidden');
+                setTimeout(() => backdrop.classList.remove('opacity-0'), 10);
+                document.body.style.overflow = 'hidden';
+            };
+
+            const closeMenu = () => {
+                sidebar.classList.add('-translate-x-full');
+                backdrop.classList.add('opacity-0');
+                setTimeout(() => backdrop.classList.add('hidden'), 200);
+                document.body.style.overflow = '';
+            };
+
+            openBtn.addEventListener('click', openMenu);
+            closeBtn.addEventListener('click', closeMenu);
+            backdrop.addEventListener('click', closeMenu);
+        }
+
+        function renderSidebar() {
+            els.daysList.innerHTML = '';
+            let completedCount = 0;
+
+            daysData.forEach((data, index) => {
+                if(data.completed) completedCount++;
+
+                const btn = document.createElement('button');
+                const isDarkActive = index === currentDayIndex ? 'tab-active bg-teal-50/50 dark:bg-white/5' : 'text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-white/5 hover:text-slate-900 dark:hover:text-white font-medium border border-transparent';
+                btn.className = `interactive-btn w-full text-left px-3 py-3 rounded-lg text-sm transition-colors flex items-center justify-between ${isDarkActive}`;
+                
+                btn.onclick = () => {
+                    selectDay(index);
+                    if(window.innerWidth < 1024) { document.getElementById('close-sidebar-btn').click(); }
+                };
+                
+                let iconClass = 'ph-circle text-slate-300 dark:text-slate-600';
+                if(data.completed) iconClass = 'ph-fill ph-check-circle text-brandTeal dark:text-cyan-400';
+                else if (index === currentDayIndex) iconClass = 'ph-fill ph-play-circle text-brandTeal dark:text-cyan-400';
+
+                btn.innerHTML = `
+                    <span class="flex items-center gap-3">
+                        <i class="${iconClass} text-lg"></i>
+                        Day ${data.day}
+                    </span>
+                    <span class="text-[9px] uppercase tracking-widest opacity-60 font-bold">${data.type.substring(0,3)}</span>
+                `;
+                els.daysList.appendChild(btn);
+            });
+
+            const progress = Math.round((completedCount / 180) * 100);
+            els.progressBar.style.width = `${progress}%`;
+            els.progressText.innerText = `${progress}%`;
+            els.completedCount.innerText = completedCount;
+        }
+
+        function selectDay(index) {
+            currentDayIndex = index;
+            renderSidebar(); 
+            updateUI(); 
+            
+            els.contentEngine.classList.remove('animate-slide-up');
+            void els.contentEngine.offsetWidth; 
+            els.contentEngine.classList.add('animate-slide-up');
+            
+            if(window.innerWidth < 1024) {
+                document.getElementById('main-scroll-area').scrollTop = 0;
+            }
+        }
+
+        function formatText(text) {
+            if(!text) return "";
+            return text.replace(/{clinic}/g, clinicName).replace(/{city}/g, city);
+        }
+
+        function updateUI() {
+            const data = daysData[currentDayIndex];
+            
+            // Left Panel
+            els.displayDayTitle.innerText = `Day ${data.day} Execution`;
+            els.themeText.innerText = data.theme;
+            
+            els.typeBadge.innerText = data.type;
+            let badgeColors = "bg-blue-100 dark:bg-blue-500/10 text-blue-700 dark:text-blue-400 border-blue-200 dark:border-blue-500/20";
+            if(data.type === 'Transformation') badgeColors = "bg-teal-100 dark:bg-teal-500/10 text-teal-700 dark:text-teal-400 border-teal-200 dark:border-teal-500/20";
+            if(data.type === 'Myth-busting') badgeColors = "bg-amber-100 dark:bg-amber-500/10 text-amber-700 dark:text-amber-500 border-amber-200 dark:border-amber-500/20";
+            if(data.type === 'Authority') badgeColors = "bg-indigo-100 dark:bg-indigo-500/10 text-indigo-700 dark:text-indigo-400 border-indigo-200 dark:border-indigo-500/20";
+            if(data.type === 'Emotional') badgeColors = "bg-rose-100 dark:bg-rose-500/10 text-rose-700 dark:text-rose-400 border-rose-200 dark:border-rose-500/20";
+            els.typeBadge.className = `px-2.5 py-1 text-[10px] font-bold uppercase tracking-widest rounded-md border inline-block ${badgeColors}`;
+
+            els.reelIdea.innerText = formatText(data.idea);
+            els.postingTime.innerHTML = `<i class="ph-fill ph-clock text-brandBlue dark:text-cyan-400"></i> ${data.time}`;
+            
+            const scriptParts = formatText(data.script).split('\n\n');
+            els.hookText.innerText = scriptParts[0] ? scriptParts[0].replace('Hook: ', '') : "...";
+            els.ctaText.innerText = scriptParts[3] ? scriptParts[3].replace('Call to Action: ', '') : "...";
+            els.scriptText.innerText = formatText(data.script);
+            
+            els.captionText.innerText = formatText(data.caption).toLowerCase();
+            const cleanTags = formatText(data.hashtags).replace(/\s+/g, '').toLowerCase(); 
+            els.hashtagsText.innerText = `${cleanTags} #${clinicName.replace(/\s+/g, '').toLowerCase()}`;
+            
+            els.storyStrategy.innerText = formatText(data.story);
+            els.engagementActions.innerText = formatText(data.engagement);
+
+            // Right Panel Updates
+            els.htReplyText.innerText = formatText(data.htReply);
+            els.htObjectionText.innerText = formatText(data.htObjection);
+            els.prTitle.innerText = data.pr.t;
+            els.prDesc.innerText = formatText(data.pr.d);
+            els.ceoDayNum.innerText = data.day;
+            els.ceoInsightText.innerText = formatText(data.ceoInsight);
+
+            if(data.completed) {
+                els.btnCompleteText.innerText = `Completed`;
+                els.btnComplete.className = `interactive-btn px-4 lg:px-6 py-2.5 lg:py-3 bg-green-50 dark:bg-green-500/10 text-green-700 dark:text-green-500 rounded-xl text-sm font-bold transition-colors border border-green-200 dark:border-green-500/20 flex items-center justify-center gap-2 shadow-sm`;
+                els.btnCompleteIcon.className = `ph-fill ph-check-circle text-lg`;
+            } else {
+                els.btnCompleteText.innerText = `Mark Complete`;
+                els.btnComplete.className = `interactive-btn px-4 lg:px-6 py-2.5 lg:py-3 bg-white dark:bg-[#111114] hover:bg-slate-50 dark:hover:bg-white/5 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white rounded-xl text-sm font-bold transition-colors border border-slate-200 dark:border-white/10 flex items-center justify-center gap-2 shadow-sm group`;
+                els.btnCompleteIcon.className = `ph-bold ph-check-circle text-lg group-hover:text-green-500 transition-colors`;
+            }
+        }
+
+        function updateGlobalPlaceholders() {
+            document.querySelectorAll('.custom-clinic').forEach(el => el.innerText = clinicName);
+            document.querySelectorAll('.custom-clinic-nospace').forEach(el => el.innerText = clinicName.replace(/\s+/g, ''));
+            document.querySelectorAll('.custom-city').forEach(el => el.innerText = city);
+        }
+
+        function toggleDayCompletion() {
+            daysData[currentDayIndex].completed = !daysData[currentDayIndex].completed;
+            renderSidebar();
+            updateUI();
+            
+            if(daysData[currentDayIndex].completed) {
+                showToast("Day Secured! Empire building in progress. 🏆");
+                if(currentDayIndex < 179) setTimeout(() => selectDay(currentDayIndex + 1), 400);
+            } else {
+                showToast("Day marked as pending.");
+            }
+        }
+
+        // --- UTILS ---
+        function copyToClipboard(elementId) {
+            const text = document.getElementById(elementId).innerText;
+            navigator.clipboard.writeText(text).then(() => showToast("Copied to clipboard!"));
+        }
+
+        function copyText(el) {
+            let text = "";
+            for (let node of el.childNodes) {
+                if (node.nodeType === 3) text += node.nodeValue;
+            }
+            if(!text.trim() && el.querySelector('span')) text = el.querySelector('span').innerText; 
+            if(!text.trim() && el.querySelector('p')) text = el.querySelector('p').innerText; 
+            navigator.clipboard.writeText(text.trim()).then(() => showToast("Copied successfully!"));
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-msg').innerText = msg;
+            toast.classList.remove('translate-y-24', 'opacity-0');
+            setTimeout(() => toast.classList.add('translate-y-24', 'opacity-0'), 3000);
+        }
+
+        // --- EXPORT PDF ENGINE (WITH PREVIEW & SEQUENTIAL RENDERING) ---
+        let cachedPDFPagesHTML = []; 
+
+        function generatePDFPages() {
+            cachedPDFPagesHTML = [];
+            const totalPages = 1 + Math.ceil(daysData.length / 6);
+
+            // 1. Generate Cover Page
+            cachedPDFPagesHTML.push(`
+                <div class="pdf-page preview-paper" style="display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 40px; box-sizing: border-box; background: white;">
+                    <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #2563eb, #06b6d4); border-radius: 16px; margin: 0 auto 20px auto; display: flex; align-items: center; justify-content: center;">
+                        <svg width="40" height="40" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M208,88c0-30.8-21-56-48-56-17.7,0-33.3,10.6-42,26.4C109.3,42.6,93.7,32,76,32,48.4,32,26,57.2,26,88c0,27.5,15.6,50.1,30.3,64.4,12.7,12.4,26.6,18.9,35.7,21.6v26c0,13.2,10.8,24,24,24s24-10.8,24-24v-26c9.1-2.7,23-9.2,35.7-21.6C190.4,138.1,208,115.5,208,88Z" fill="white"/></svg>
+                    </div>
+                    <h1 style="font-size: 56px; font-weight: 800; color: #1e3a8a; margin: 0; font-family: 'Plus Jakarta Sans', sans-serif; letter-spacing: -1px;">OWNIT</h1>
+                    <h2 style="font-size: 32px; font-weight: 700; color: #0f172a; margin: 20px 0 10px 0; font-family: 'Plus Jakarta Sans', sans-serif;">180-Day Legacy Masterplan</h2>
+                    <p style="font-size: 18px; color: #475569; margin: 0 0 60px 0; font-weight: 500;">Total Market Monopoly & High-Ticket Execution</p>
+                    
+                    <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 16px; padding: 40px; width: 100%; max-width: 500px; margin: 0 auto;">
+                        <p style="font-size: 13px; color: #64748b; text-transform: uppercase; letter-spacing: 2px; margin: 0 0 10px 0; font-weight: 600;">Prepared Exclusively For</p>
+                        <h3 style="font-size: 28px; font-weight: 800; color: #0f172a; margin: 0 0 8px 0; font-family: 'Plus Jakarta Sans', sans-serif;">${clinicName}</h3>
+                        <p style="font-size: 16px; color: #2563eb; font-weight: 600; margin: 0;">${city}</p>
+                    </div>
+                    
+                    <div style="margin-top: 100px;">
+                        <p style="font-size: 14px; font-weight: 700; color: #0f172a; margin: 0 0 4px 0;">OWNIT Systems Inc.</p>
+                        <p style="font-size: 13px; color: #64748b; margin: 0 0 4px 0;">hello@ownit.so</p>
+                        <p style="font-size: 13px; color: #2563eb; margin: 0; font-weight: 500;">www.ownit.so</p>
+                    </div>
+                </div>
+            `);
+
+            // 2. Generate Content Pages (6 days per page)
+            let pageNum = 2;
+            for (let i = 0; i < daysData.length; i += 6) {
+                const chunk = daysData.slice(i, i + 6);
+                
+                let pageContent = `
+                    <div class="pdf-page preview-paper" style="padding: 40px; box-sizing: border-box; display: flex; flex-direction: column; background: white;">
+                        
+                        <div style="border-bottom: 2px solid #2563eb; padding-bottom: 15px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0;">
+                            <h2 style="font-size: 24px; font-weight: 800; color: #0f172a; margin: 0; font-family: 'Plus Jakarta Sans', sans-serif;">Execution Blueprint</h2>
+                            <span style="font-size: 12px; color: #64748b; font-weight: 600;">${clinicName}</span>
+                        </div>
+                        
+                        <div style="display: flex; flex-wrap: wrap; gap: 20px; width: 100%; flex-grow: 1; align-content: flex-start;">
+                `;
+
+                chunk.forEach(data => {
+                    const safeIdea = data.idea ? formatText(data.idea) : "Content Idea";
+                    const safeScript = data.script ? formatText(data.script).replace(/\n/g, ' ') : "Script missing.";
+                    const safeCaption = data.caption ? formatText(data.caption).replace(/\n/g, ' ') : "Caption missing.";
+                    const safeTags = data.hashtags ? `${data.hashtags.replace(/{city}/g, city.replace(/\s+/g, ''))} #${clinicName.replace(/\s+/g, '')}`.toLowerCase() : "";
+                    const safePRTitle = data.pr && data.pr.t ? data.pr.t : "PR Strategy";
+                    const safePRDesc = data.pr && data.pr.d ? formatText(data.pr.d) : "PR details missing.";
+
+                    pageContent += `
+                        <div style="width: calc(50% - 10px); height: 290px; border: 1px solid #e2e8f0; border-radius: 10px; padding: 16px; background: #ffffff; box-sizing: border-box; display: flex; flex-direction: column;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                <h3 style="margin: 0; font-size: 14px; font-weight: 800; color: #0f172a;">Day ${data.day}</h3>
+                                <span style="background: #eff6ff; color: #2563eb; padding: 3px 6px; border-radius: 4px; font-size: 9px; font-weight: 700; text-transform: uppercase;">${data.type}</span>
+                            </div>
+                            
+                            <p style="margin: 0 0 10px 0; font-size: 12px; font-weight: 700; color: #1e293b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${safeIdea}</p>
+
+                            <div style="background: #f8fafc; padding: 8px 10px; border-left: 2px solid #2563eb; margin-bottom: 10px; flex-shrink: 0;">
+                                <strong style="color: #2563eb; font-size: 8px; text-transform: uppercase; display: block; margin-bottom: 3px;">Video Script</strong>
+                                <p style="margin: 0; font-size: 10px; color: #334155; line-height: 1.3; font-weight: 500; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">${safeScript}</p>
+                            </div>
+
+                            <div style="padding: 8px 10px; border: 1px solid #e2e8f0; border-radius: 4px; margin-bottom: 10px; flex-shrink: 0;">
+                                <strong style="color: #64748b; font-size: 8px; text-transform: uppercase; display: block; margin-bottom: 3px;">Caption & Tags</strong>
+                                <p style="margin: 0 0 4px 0; font-size: 9px; color: #475569; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">${safeCaption}</p>
+                                <p style="margin: 0; font-size: 9px; color: #06b6d4; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${safeTags}</p>
+                            </div>
+
+                            <div style="background: #f0fdfa; padding: 8px 10px; border-radius: 4px; border: 1px solid #ccfbf1; flex-grow: 1; display: flex; flex-direction: column; justify-content: center;">
+                                <strong style="color: #0d9488; font-size: 8px; text-transform: uppercase; display: block; margin-bottom: 3px;">PR Action: ${safePRTitle}</strong>
+                                <p style="margin: 0; font-size: 10px; color: #115e59; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">${safePRDesc}</p>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                pageContent += `
+                        </div>
+                        <div style="margin-top: 20px; border-top: 1px solid #e2e8f0; padding-top: 15px; display: flex; justify-content: space-between; font-size: 11px; color: #94a3b8; font-weight: 500; flex-shrink: 0;">
+                            <span>OWNIT 180-Day Legacy OS</span>
+                            <span>Page ${pageNum} of ${totalPages}</span>
+                        </div>
+                    </div>
+                `;
+                
+                cachedPDFPagesHTML.push(pageContent);
+                pageNum++;
+            }
+        }
+
+        function previewMasterplan() {
+            showToast("Generating Preview...");
+            
+            generatePDFPages();
+            
+            const container = document.getElementById('preview-content-container');
+            container.innerHTML = cachedPDFPagesHTML.join('');
+            
+            const modal = document.getElementById('pdf-preview-modal');
+            modal.classList.remove('hidden');
+            setTimeout(() => modal.classList.remove('opacity-0'), 10);
+        }
+
+        function closePreview() {
+            const modal = document.getElementById('pdf-preview-modal');
+            modal.classList.add('opacity-0');
+            setTimeout(() => modal.classList.add('hidden'), 300); 
+        }
+
+        // Extremely robust multi-page PDF generation using Promises
+        async function downloadFromPreview() {
+            const btn = document.getElementById('btn-actual-download');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = `<i class="ph-bold ph-spinner animate-spin text-base"></i> Compiling ${cachedPDFPagesHTML.length} Pages...`;
+            btn.disabled = true;
+
+            showToast("Compiling Masterplan... Please leave this tab open.");
+
+            // Create a hidden workspace container
+            const workspace = document.createElement('div');
+            workspace.style.position = 'absolute';
+            workspace.style.left = '-9999px';
+            workspace.style.top = '0';
+            workspace.innerHTML = cachedPDFPagesHTML.join('');
+            document.body.appendChild(workspace);
+
+            const pagesToRender = workspace.querySelectorAll('.pdf-page');
+
+            const opt = {
+                margin:       0,
+                filename:     `OWNIT_180_Day_Proposal_${clinicName.replace(/\s+/g, '_')}.pdf`,
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2, useCORS: true, letterRendering: true, backgroundColor: '#ffffff' },
+                jsPDF:        { unit: 'px', format: [800, 1130], orientation: 'portrait' } 
+            };
+
+            try {
+                // Initialize the PDF with the first page
+                let pdfWorker = html2pdf().set(opt).from(pagesToRender[0]).toPdf();
+
+                // Loop through the rest of the pages sequentially
+                for (let i = 1; i < pagesToRender.length; i++) {
+                    pdfWorker = pdfWorker.get('pdf').then(pdf => {
+                        pdf.addPage();
+                    }).from(pagesToRender[i]).toContainer().toCanvas().toPdf();
+                }
+                
+                // Finalize and save
+                await pdfWorker.save();
+                
+                // Cleanup and reset
+                document.body.removeChild(workspace);
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+                closePreview();
+                showToast("Masterplan Downloaded Successfully! 🏆");
+                
+            } catch(err) {
+                console.error(err);
+                if (document.body.contains(workspace)) document.body.removeChild(workspace);
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+                showToast("Error generating PDF. Please try again.");
+            }
+        }
+
+        // Run
+        init();
+
+    </script>
+</body>
+</html>
